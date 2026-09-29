@@ -1,0 +1,9 @@
+{
+  "firmware_chain_desktop": {
+    "total_us": 12.9772,
+    "parse_plus_ephemeris_us": 12.8749,
+    "ads_us": 0.1023,
+    "samples": 80040
+  },
+  "frames_timed": 2001
+}
