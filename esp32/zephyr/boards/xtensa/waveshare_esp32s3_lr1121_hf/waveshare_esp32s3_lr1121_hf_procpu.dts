@@ -1,0 +1,65 @@
+/*
+ * Copyright (c) 2026 AIO PocketQube
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * PROCPU variant (core 0): command & data handling + user interfaces.
+ * USB-Serial/JTAG console, WiFi AP, IPM master.
+ */
+
+/dts-v1/;
+
+#include <espressif/esp32s3/esp32s3_wroom_n4r2.dtsi>
+#include <espressif/partitions_0x0_amp.dtsi>
+#include "waveshare_esp32s3_lr1121_hf-pinctrl.dtsi"
+
+/ {
+	model = "Waveshare ESP32-S3-LR1121-HF PROCPU";
+	compatible = "espressif,esp32s3";
+
+	aliases {
+		uart-0 = &usb_serial;
+	};
+
+	chosen {
+		zephyr,sram = &sram1;
+		zephyr,console = &usb_serial;
+		zephyr,shell-uart = &usb_serial;
+		zephyr,flash = &flash0;
+		zephyr,code-partition = &slot0_partition;
+	};
+};
+
+&usb_serial {
+	status = "okay";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&ipm0 {
+	status = "okay";
+};
+
+&trng0 {
+	status = "okay";
+};
+
+&wifi {
+	status = "okay";
+};
+
+/* Second espressif,esp32-wifi instance (index 1): the AP/STA net device.
+ * Required by CONFIG_ESP32_WIFI_AP_STA_MODE (selected by WIFI_USAGE_MODE_STA_AP),
+ * which the ESP32 WiFi driver compiles a second NET_DEVICE_DT_INST_DEFINE(1, ...) for.
+ * Mirrors samples/net/wifi/apsta_mode/socs/esp32_procpu.overlay. */
+/ {
+	wifi_ap: wifi_ap {
+		compatible = "espressif,esp32-wifi";
+		status = "okay";
+	};
+};

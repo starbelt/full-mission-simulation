@@ -55,18 +55,29 @@ static void estimate(const SensorSample &s, AdsFrameResult &result,
     if (!result.valid) flags |= 16u;
 }
 
-static void emit(int seq, const AdsFrameResult &r, unsigned flags) {
-    char out[192];
+// Cycle counts from the last frame, so the host can compute real on-device
+// execution times. -1 when no frame has been processed yet (the idle
+// heartbeat, which is not a measurement).
+static int32_t g_cyc_eph = -1;
+static int32_t g_cyc_ads = -1;
+
+static void emit(int seq, const AdsFrameResult &r, unsigned flags,
+                uint32_t eph_cycles, uint32_t ads_cycles) {
+    char out[224];
+    g_cyc_eph = (int32_t)eph_cycles;
+    g_cyc_ads = (int32_t)ads_cycles;
     int n = snprintf(out, sizeof(out),
-        "R %d %.6f %.6f %.6e %.4f %u %.6f %.6f %.6f %.6f\n",
+        "R %d %.6f %.6f %.6e %.4f %u %.6f %.6f %.6f %.6f %d %d\n",
         seq, r.angle_deg, r.rate, r.mag_norm, r.sun_norm, flags,
-        r.q[0], r.q[1], r.q[2], r.q[3]);
+        r.q[0], r.q[1], r.q[2], r.q[3], g_cyc_eph, g_cyc_ads);
     if (n > 0 && n < (int)sizeof(out)) send_line(out);
 }
 
 static void error_reply() {
     const AdsFrameResult empty = {0, 0, 0, 0, {1, 0, 0, 0}, 0};
-    emit(-1, empty, 4);
+    g_cyc_eph = -1;
+    g_cyc_ads = -1;
+    emit(-1, empty, 4, 0, 0);
 }
 
 static void uart_rx_isr(const struct device *dev, void *) {
@@ -121,18 +132,30 @@ int main() {
                 error_reply();
                 continue;
             }
+            // On-device execution time, measured with the cycle counter
+            // rather than inferred from the host. Ephemeris and the attitude
+            // solution are timed separately because they are the two costs
+            // that could plausibly matter; the parse is included in the first
+            // bucket since it is part of turning a line into a sample.
+            uint32_t t0 = k_cycle_get_32();
+
             // Derive the reference vectors onboard, from the vehicle's own
             // position and time. The flags are only set if this succeeds.
             ephemeris.references(sample.epoch_ms, sample.pos_gcrs_m, sample);
+            uint32_t t1 = k_cycle_get_32();
 
             AdsFrameResult result;
             unsigned flags;
             estimate(sample, result, flags);
-            emit((int)sample.seq, result, flags);
+            uint32_t t2 = k_cycle_get_32();
+
+            emit((int)sample.seq, result, flags, t1 - t0, t2 - t1);
         }
 
         if (k_uptime_get() - last_rx >= 3000) {
-            send_line("R -2 0 0 0 0 8 1 0 0 0\n");
+            // Same 12-field shape as a real reply so the host parser never
+            // has to special-case the heartbeat; -1 marks "no measurement".
+            send_line("R -2 0 0 0 0 8 1 0 0 0 -1 -1\n");
             last_rx = k_uptime_get();
         }
     }

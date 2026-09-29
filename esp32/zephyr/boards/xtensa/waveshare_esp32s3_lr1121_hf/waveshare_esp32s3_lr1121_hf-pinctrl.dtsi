@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2026 AIO PocketQube
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Waveshare ESP32-S3-LR1121-HF (castellated module, 4MB flash + 2MB PSRAM).
+ * Verified pin mapping (Meshtastic variant.h / working firmware):
+ *   LR1121 SPI2: SCK=40, MOSI=45, MISO=46, CS=42
+ *   LR1121      : IRQ(DIO1)=38, RST=39, BUSY(DIO0)=41
+ *   USB         : USB-Serial/JTAG via GPIO19/20 (console)
+ */
+
+#include <zephyr/dt-bindings/pinctrl/esp-pinctrl-common.h>
+#include <zephyr/dt-bindings/pinctrl/esp32s3-pinctrl.h>
+#include <zephyr/dt-bindings/pinctrl/esp32s3-gpio-sigmap.h>
+
+&pinctrl {
+	spim2_default: spim2_default {
+		group1 {
+			pinmux = <SPIM2_MISO_GPIO46>,
+				 <SPIM2_SCLK_GPIO40>;
+		};
+
+		group2 {
+			pinmux = <SPIM2_MOSI_GPIO45>;
+			output-low;
+		};
+	};
+};

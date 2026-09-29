@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2026 AIO PocketQube
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * APPCPU variant (core 1): the autonomous COM engine.
+ * Owns SPI2 + LR1121 radio pins and the IPM slave side.
+ */
+
+/dts-v1/;
+
+#include <espressif/esp32s3/esp32s3_wroom_n4r2.dtsi>
+#include <espressif/partitions_0x0_amp.dtsi>
+#include "waveshare_esp32s3_lr1121_hf-pinctrl.dtsi"
+
+/ {
+	model = "Waveshare ESP32-S3-LR1121-HF APPCPU";
+	compatible = "espressif,esp32s3";
+
+	chosen {
+		zephyr,sram = &sram1;
+		zephyr,flash = &flash0;
+		zephyr,code-partition = &slot0_appcpu_partition;
+	};
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&spi2 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+	pinctrl-0 = <&spim2_default>;
+	pinctrl-names = "default";
+
+		/* LR1121 LoRa transceiver. CS (GPIO42) is driven in software by the
+		 * Zephyr HAL shim to match the proven Arduino/RadioLib reference
+		 * (SPI.begin(40,46,45,42) + per-transfer CS toggle). The SPIM CSEL
+		 * hardware pinmux is intentionally NOT used.
+		 *
+		 * ALL four control pins are on GPIO bank 1 (pins 32-53), so they must be
+		 * referenced on the &gpio1 controller with bank-RELATIVE numbers
+		 * (absolute pin - 32):  GPIO38->6, GPIO39->7, GPIO41->9, GPIO42->10.
+		 * Referencing them on &gpio0 is wrong: the generic GPIO API masks with
+		 * BIT(pin) as a uint32_t, so pin 42 wraps to bit 10 and silently drives
+		 * GPIO10 instead of GPIO42. (esp_threadbr board uses the same convention.) */
+		lr1121: lr1121@0 {
+			compatible = "semtech,lr1121";
+			reg = <0>;
+			spi-max-frequency = <DT_FREQ_M(16)>;
+			cs-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;    /* GPIO42 */
+			reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;  /* GPIO39 */
+			busy-gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;  /* GPIO41 */
+			dio1-gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>;  /* GPIO38 */
+		};
+};
+
+&ipm0 {
+	status = "okay";
+};
+
+&trng0 {
+	status = "okay";
+};

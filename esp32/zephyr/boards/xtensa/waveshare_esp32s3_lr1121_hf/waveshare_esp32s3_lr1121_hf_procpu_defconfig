@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# PROCPU: USB-Serial/JTAG is the console on this board (no UART0 breakout to
+# the USB-C connector). WiFi AP lives here. Kernel heap required by the
+# ESP32 HAL (intc/flash drivers call k_malloc).
+CONFIG_CONSOLE=y
+CONFIG_SERIAL=y
+CONFIG_UART_CONSOLE=y
+CONFIG_SERIAL_ESP32_USB=y
+CONFIG_GPIO=y
+CONFIG_HEAP_MEM_POOL_SIZE=8192

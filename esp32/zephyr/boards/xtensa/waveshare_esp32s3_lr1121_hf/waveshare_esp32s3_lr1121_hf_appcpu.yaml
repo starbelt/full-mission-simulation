@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+
+identifier: waveshare_esp32s3_lr1121_hf/esp32s3/appcpu
+name: Waveshare ESP32-S3-LR1121-HF APPCPU
+type: mcu
+arch: xtensa
+toolchain:
+  - zephyr
+supported:
+  - gpio
+  - spi
+testing:
+  ignore_tags:
+    - net
+    - bluetooth
+    - flash
+    - posix
+    - watchdog
+    - logging
+    - kernel
+    - pm
+    - crypto
+vendor: waveshare

@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+
+board:
+  name: waveshare_esp32s3_lr1121_hf
+  full_name: Waveshare ESP32-S3-LR1121-HF
+  vendor: waveshare
+  socs:
+  - name: esp32s3

@@ -200,8 +200,9 @@ def fig_timing():
     ax.set_ylabel("microseconds per sample")
     ax.set_ylim(0, max(parts) * 1.35)
     ax.set_title("Where the per-sample time goes\n"
-                 "firmware C++ chain, desktop CPU, 80k samples",
-                 fontsize=10, loc="left")
+                 "firmware C++ ALGORITHM on a desktop CPU, 80k samples\n"
+                 "(NOT measured on the ESP32-S3 -- see caveat)",
+                 fontsize=9, loc="left")
 
     # Panel 2: CPU load against sample rate.
     r_cross = 1e6 / fw["total_us"]
@@ -237,6 +238,13 @@ def fig_timing():
                   fontsize=10, loc="left")
     ax2.legend(frameon=False, fontsize=8, loc="lower right")
 
+    fig.text(0.5, -0.035,
+             "CAVEAT: desktop CPU running the board's algorithm. The ESP32-S3 "
+             "runs 240-480 MHz, so its per-sample cost will be higher.\n"
+             "The 12.98 us is a lower bound on the board, not a measurement of "
+             "it. The study's ~160 us/sample times a different implementation "
+             "(Python TriadEstimator), not a wider region.",
+             ha="center", va="top", fontsize=7, color=WARN, style="italic")
     fig.tight_layout()
     p = OUT / "timing_execution_cost.png"
     fig.savefig(p, bbox_inches="tight")

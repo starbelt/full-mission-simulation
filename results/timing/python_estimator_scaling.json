@@ -1,0 +1,21 @@
+{
+  "scaling": [
+    {
+      "samples": 54001,
+      "estimator_us": 168.85116942230957,
+      "sensor_models_us": 17.89931853143277
+    },
+    {
+      "samples": 54001,
+      "estimator_us": 176.73535860339675,
+      "sensor_models_us": 19.13226421737426
+    },
+    {
+      "samples": 54001,
+      "estimator_us": 169.92161811970698,
+      "sensor_models_us": 21.29217977456286
+    }
+  ],
+  "firmware_chain_us_per_sample": 12.98,
+  "note": "firmware number is a desktop CPU running the board's algorithm, not a measurement on the ESP32-S3"
+}

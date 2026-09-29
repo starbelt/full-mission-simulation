@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+
+identifier: waveshare_esp32s3_lr1121_hf/esp32s3/procpu
+name: Waveshare ESP32-S3-LR1121-HF PROCPU
+type: mcu
+arch: xtensa
+toolchain:
+  - zephyr
+supported:
+  - gpio
+  - uart
+  - spi
+  - watchdog
+  - entropy
+  - netif:wifi
+ram: 416
+flash: 1344
+vendor: waveshare
