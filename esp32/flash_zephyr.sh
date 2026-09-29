@@ -11,17 +11,10 @@
 # The images carry the board's own flash parameters, so no --flash-mode or
 # --flash-size overrides are passed.
 #
-# There is deliberately NO trailing reset (`--after no-reset`). esptool's
-# default "Hard resetting via RTS pin" latches this board in the ROM download
-# stub (boot:0x0, "waiting for download"), where writes are accepted and
-# silently discarded -- which looks exactly like a firmware that ignores its
-# input. With the reset suppressed the chip boots the new images on its own
-# once esptool closes the port. The AIO PocketQube flash script, which has a
-# proven working link on this same board, likewise leaves reset alone. If a
-# flash does not take, unplug the board rather than adding another reset.
-#
-# On this board the PC does not need DTR/RTS pulsed either: the USB console
-# runs at DTR=false, RTS=false, which is what the host-side harnesses use.
+# esptool's default trailing "Hard resetting via RTS pin" is correct and is
+# what gets the board running the freshly written images. Do not pass
+# --after no-reset here: with no reset the chip stays in the ROM download
+# stub ("Staying in bootloader") and never boots the app.
 set -euo pipefail
 
 port="${1:?specify a serial port, e.g. COM5}"
@@ -34,6 +27,5 @@ done
 build_native="$(cd "$build" && pwd -W)"
 
 py -3.13 -m esptool --chip esp32s3 --port "$port" --baud 460800 \
-    --after no-reset \
     write-flash 0x0 "$build_native/mcuboot/zephyr/zephyr.bin" \
     0x20000 "$build_native/zephyr/zephyr/zephyr.signed.bin"
