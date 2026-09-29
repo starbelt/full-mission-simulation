@@ -1,0 +1,35 @@
+{
+  "tag": "orbit_d5400_v7_litfrac",
+  "runs": [
+    {
+      "label": "rate10_seed0",
+      "rate_hz": 10.0,
+      "seed": 0,
+      "file": "rate10_seed0.json"
+    },
+    {
+      "label": "rate10_seed1",
+      "rate_hz": 10.0,
+      "seed": 1,
+      "file": "rate10_seed1.json"
+    },
+    {
+      "label": "rate10_seed2",
+      "rate_hz": 10.0,
+      "seed": 2,
+      "file": "rate10_seed2.json"
+    },
+    {
+      "label": "rate10_seed3",
+      "rate_hz": 10.0,
+      "seed": 3,
+      "file": "rate10_seed3.json"
+    },
+    {
+      "label": "rate10_seed4",
+      "rate_hz": 10.0,
+      "seed": 4,
+      "file": "rate10_seed4.json"
+    }
+  ]
+}

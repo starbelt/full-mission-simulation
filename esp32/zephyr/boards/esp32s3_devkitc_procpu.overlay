@@ -1,0 +1,10 @@
+/ {
+    aliases { uart-0 = &usb_serial; };
+    chosen {
+        zephyr,console = &usb_serial;
+        zephyr,shell-uart = &usb_serial;
+    };
+};
+&usb_serial { status = "okay"; };
+/* Waveshare ESP32-S3-LR1121-HF has 4 MB flash, not DevKitC's 8 MB. */
+&flash0 { reg = <0x0 DT_SIZE_M(4)>; };

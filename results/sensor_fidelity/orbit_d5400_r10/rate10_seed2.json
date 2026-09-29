@@ -1,0 +1,101 @@
+{
+  "config": {
+    "rate_hz": 10.0,
+    "seed": 2,
+    "gyro_noise_rms_dps": 0.01,
+    "mag_noise_rms_t": 6e-07,
+    "sun_noise_rms_a": 1e-06
+  },
+  "environment": {
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.4.6",
+    "scipy": "1.18.1"
+  },
+  "runs": [
+    {
+      "variant_name": "ideal",
+      "description": "noise-free reference (ADC grid still active)",
+      "samples": 54001,
+      "valid_samples": 33251,
+      "invalid_samples": 20750,
+      "angle_mean_deg": 0.011599636044227186,
+      "angle_rms_deg": 0.055552018411926356,
+      "angle_max_deg": 0.5768031475119034,
+      "angle_p95_deg": 0.008599764565981558,
+      "angle_sigma3_deg": 0.1629848938861061,
+      "estimator_wall_time_s": 8.374461300030816,
+      "per_sample_us": 155.07974482011105
+    },
+    {
+      "variant_name": "quantization_only",
+      "description": "ADC quantization only, no analog noise",
+      "samples": 54001,
+      "valid_samples": 33251,
+      "invalid_samples": 20750,
+      "angle_mean_deg": 0.011599636044227186,
+      "angle_rms_deg": 0.055552018411926356,
+      "angle_max_deg": 0.5768031475119034,
+      "angle_p95_deg": 0.008599764565981558,
+      "angle_sigma3_deg": 0.1629848938861061,
+      "estimator_wall_time_s": 8.097797299968079,
+      "per_sample_us": 149.95643228769984
+    },
+    {
+      "variant_name": "gyro_noise_only",
+      "description": "ICM-40609-D gyro noise only",
+      "samples": 54001,
+      "valid_samples": 33251,
+      "invalid_samples": 20750,
+      "angle_mean_deg": 0.011599636044227186,
+      "angle_rms_deg": 0.055552018411926356,
+      "angle_max_deg": 0.5768031475119034,
+      "angle_p95_deg": 0.008599764565981558,
+      "angle_sigma3_deg": 0.1629848938861061,
+      "estimator_wall_time_s": 8.349370299954899,
+      "per_sample_us": 154.61510527499303
+    },
+    {
+      "variant_name": "mag_noise_only",
+      "description": "MMC5983MA magnetometer noise only",
+      "samples": 54001,
+      "valid_samples": 33251,
+      "invalid_samples": 20750,
+      "angle_mean_deg": 1.0575092052662602,
+      "angle_rms_deg": 1.3412979672890986,
+      "angle_max_deg": 6.2477406670458215,
+      "angle_p95_deg": 2.655533867880842,
+      "angle_sigma3_deg": 2.4752726970698955,
+      "estimator_wall_time_s": 8.366851200000383,
+      "per_sample_us": 154.93881965149504
+    },
+    {
+      "variant_name": "sun_noise_only",
+      "description": "VEMD8080 array noise only (assumed level)",
+      "samples": 54001,
+      "valid_samples": 33251,
+      "invalid_samples": 20750,
+      "angle_mean_deg": 0.011602617049554481,
+      "angle_rms_deg": 0.05555205837179147,
+      "angle_max_deg": 0.5768200556594539,
+      "angle_p95_deg": 0.008604457716911318,
+      "angle_sigma3_deg": 0.16298310673355065,
+      "estimator_wall_time_s": 8.296347800001968,
+      "per_sample_us": 153.63322531067882
+    },
+    {
+      "variant_name": "all_noise",
+      "description": "all three sensor noise sources together",
+      "samples": 54001,
+      "valid_samples": 33251,
+      "invalid_samples": 20750,
+      "angle_mean_deg": 1.0575091401138665,
+      "angle_rms_deg": 1.3412980120888744,
+      "angle_max_deg": 6.247740794012369,
+      "angle_p95_deg": 2.6555254149437904,
+      "angle_sigma3_deg": 2.475273166083568,
+      "estimator_wall_time_s": 8.509578900004271,
+      "per_sample_us": 157.58187626162982
+    }
+  ]
+}

@@ -18,3 +18,16 @@ dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# PlatformIO / Zephyr build outputs. esp32/.pio alone is ~20 MB of .elf and
+# .map; the Zephyr build is staged outside the repo (see esp32/build_zephyr.sh)
+# so it never lands here.
+.pio/
+*.elf
+*.map
+*.bin
+*.hex
+
+# Scratch files from ad-hoc host probes. Real code lives in esp32/host_test/,
+# esp32/src/ and esp32/zephyr/.
+esp32/scratch_*
