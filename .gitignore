@@ -63,3 +63,17 @@ results/**/*header_dependencies.txt
 results/**/dependency_hashes.json
 results/**/retained_target_hashes.json*
 results/adcs_closed_loop/**/*.csv
+# Staged build inputs and one-off audit scripts from the firmware runs. The
+# compact audit.json/summary.json/REPORT.md next to them carry the findings;
+# the headers, symbol/section dumps and tool-version stamps are regenerable
+# from the pinned Zephyr tree.
+results/**/*.h
+results/**/*.py
+results/**/*_symbols.txt
+results/**/*_sections.txt
+results/**/*_size.txt
+results/**/*_version.txt
+results/**/west_*
+results/**/repo_state.txt
+results/**/repo_head.txt
+results/**/*_pre_tail_trim*
