@@ -46,8 +46,8 @@
 
 // Days since the J2000.0 epoch.
 static inline double days_since_j2000(int64_t epoch_ms) {
-    // Unix epoch -> J2000.0 is 10957.5 days.
-    return 10957.5 + static_cast<double>(epoch_ms) / 86400000.0;
+    // J2000 is 10957.5 days AFTER Unix epoch: subtract the offset.
+    return static_cast<double>(epoch_ms) / 86400000.0 - 10957.5;
 }
 
 // Low-precision solar position (Meeus, Astronomical Algorithms ch. 25).
@@ -65,9 +65,25 @@ static inline void sunDirectionGcrs(int64_t epoch_ms, float out[3]) {
     // Obliquity of the ecliptic, with the short-period nutation term.
     const double eps = (23.439 - 0.0000004 * n) * POCKETADCS_PI / 180.0;
 
-    out[0] = static_cast<float>(cos(lambda_rad));
-    out[1] = static_cast<float>(cos(eps) * sin(lambda_rad));
-    out[2] = static_cast<float>(sin(eps) * sin(lambda_rad));
+    // Meeus' ecliptic longitude/obliquity give mean equatorial axes OF DATE,
+    // not GCRS. Remove precession with the same verified rotation primitives
+    // as the magnetic-reference model. Merely labelling these axes GCRS costs
+    // ~0.35 degrees in 2025 and grows with distance from J2000.
+    const double equatorial_date[3] = {
+        cos(lambda_rad), cos(eps) * sin(lambda_rad), sin(eps) * sin(lambda_rad)
+    };
+    const double jd = n + 2451545.0;
+    double rz1[9], ry[9], rz2[9], tmp[9], p[9];
+    pocketadcs_igrf::mat3RotZ(-pocketadcs_igrf::precessionZ(jd), rz1);
+    pocketadcs_igrf::mat3RotY(pocketadcs_igrf::precessionTheta(jd), ry);
+    pocketadcs_igrf::mat3RotZ(-pocketadcs_igrf::precessionZeta(jd), rz2);
+    pocketadcs_igrf::mat3Mul(rz1, ry, tmp);
+    pocketadcs_igrf::mat3Mul(tmp, rz2, p);
+    for (int i = 0; i < 3; ++i) {
+        out[i] = static_cast<float>(p[i] * equatorial_date[0] +
+                                   p[3 + i] * equatorial_date[1] +
+                                   p[6 + i] * equatorial_date[2]);
+    }
 }
 
 // The interface. Separate from SensorSource because the reference vectors

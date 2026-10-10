@@ -11,10 +11,14 @@
 # The images carry the board's own flash parameters, so no --flash-mode or
 # --flash-size overrides are passed.
 #
-# esptool's default trailing "Hard resetting via RTS pin" is correct and is
-# what gets the board running the freshly written images. Do not pass
-# --after no-reset here: with no reset the chip stays in the ROM download
-# stub ("Staying in bootloader") and never boots the app.
+# This target uses the ESP32-S3's native USB-Serial/JTAG, not an external
+# USB/UART bridge. The default RTS reset may reset only the cores and leave
+# the sampled download-mode strap latched. A watchdog full-system reset
+# re-samples the boot straps and starts the application without an EN press.
+# Verified on COM5: same image was silent after hard-reset, then emitted its
+# heartbeat and answered a frame after watchdog-reset. Do not use no-reset.
+# This choice is S3-specific; it must not be generalized to ESP32-C6.
+# https://docs.espressif.com/projects/esptool/en/latest/esp32s3/troubleshooting.html
 set -euo pipefail
 
 port="${1:?specify a serial port, e.g. COM5}"
@@ -26,6 +30,6 @@ for image in "$boot" "$app"; do
 done
 build_native="$(cd "$build" && pwd -W)"
 
-py -3.13 -m esptool --chip esp32s3 --port "$port" --baud 460800 \
+py -3.13 -m esptool --chip esp32s3 --port "$port" --baud 460800 --after watchdog-reset \
     write-flash 0x0 "$build_native/mcuboot/zephyr/zephyr.bin" \
     0x20000 "$build_native/zephyr/zephyr/zephyr.signed.bin"
