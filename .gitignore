@@ -31,3 +31,35 @@ Thumbs.db
 # Scratch files from ad-hoc host probes. Real code lives in esp32/host_test/,
 # esp32/src/ and esp32/zephyr/.
 esp32/scratch_*
+.probe/
+.probe.py
+smoke.cpp
+smoke.exe
+
+# Raw HIL captures, Zephyr build trees, and audit scratch under results/.
+# Only the small summaries are tracked: REPORT.md, audit.json, summary.json,
+# manifest.json, metrics.csv, verification.json, plots. The raw wire/frame
+# captures (*.jsonl) and staged build trees are regenerable and total ~2.3 GB.
+results/**/*.jsonl
+results/**/*.log
+results/**/*.exit
+results/**/*.obj
+results/**/*.pickle
+results/**/*.su
+results/**/*.dts
+results/**/*.dtsi
+results/**/*.exe
+results/**/target/
+results/**/target_pre_tail_trim/
+results/**/*_build/
+results/**/handoff_sources/
+results/**/__pycache__/
+# Full build-audit provenance dumps (several MB per version) and per-frame
+# simulation traces. The compact audit.json/summary.json/manifest.json next to
+# them are what gets tracked.
+results/**/*commands.txt
+results/**/*inputs_all.txt
+results/**/*header_dependencies.txt
+results/**/dependency_hashes.json
+results/**/retained_target_hashes.json*
+results/adcs_closed_loop/**/*.csv
