@@ -8,21 +8,31 @@ estimator.
 
 Method
 ------
-The forward model is linear in the (unnormalized) sun direction ``u``::
+The forward model is, per face, ``d_i = scale_i * f(max(0, n_i . u)) +
+dark_i`` where ``f`` is the array's angular response -- a power law plus a
+reflection tail, ``c ** q + t * (1 - c)`` (see
+``vemd8080_array._angular_response``). Because ``f`` is strictly
+increasing, its inverse turns each channel back into a linear quantity:
+``c_i = f ** -1 (d_i - dark_i) / scale_i`` is the cosine ``max(0, n_i .
+u)``, so the six channels form an overdetermined linear system in the
+three unknowns of ``u``. Solving it in the least-squares sense and
+renormalizing recovers the direction exactly when no channel is clipped
+and the scales are known.
 
-    d_i = scale_i * max(0, n_i . u) + dark_i
+That plain solution is biased whenever the sun is off the visible side of
+a face, because a clipped (dark) face contributes a spurious "sunward"
+pull. The estimate is therefore refined by iteratively reweighted least
+squares over only the faces predicted lit, which removes the clipping
+bias. Two passes drive the residual well below a tenth of a degree for the
+geometries tested.
 
-Each channel is an inner product with a *known* face normal, so all six
-channels form an overdetermined linear system in three unknowns. Solving it
-in the least-squares sense and renormalizing recovers the direction exactly
-when no channel is clipped and the scales are known.
-
-That plain solution is biased whenever the sun is off the visible side of a
-face, because a clipped (dark) face contributes a spurious "sunward" pull.
-The estimate is therefore refined by iteratively reweighted least squares
-over only the faces predicted lit, which removes the clipping bias. Two
-passes drive the residual well below a tenth of a degree for the geometries
-tested.
+Because the tail breaks the scale-homogeneity a per-row max-normalization
+relies on, the cosines are recovered with a fixed point on each row's peak
+cosine (see ``_solve_direction``), not a plain elementwise inverse: the
+latter left the estimate ~0.1 deg off, biased toward grazing incidence.
+The fixed point is exact (to machine precision) for uniform channel scales
+and robust to the modest per-channel spread and dark floor a real build
+carries.
 
 Validity
 --------
@@ -50,8 +60,9 @@ import numpy as np
 import numpy.typing as npt
 
 from pocketadcs_sim.sensors.vemd8080_array import (
-    _RESPONSE_EXPONENT,
     CHANNEL_NORMALS,
+    _angular_response,
+    invert_angular_response,
 )
 
 FloatArray = npt.NDArray[np.float64]
@@ -80,10 +91,10 @@ _FLOOR_FRACTION = 0.2
 # counts as lit during the clipped refinement. Dimensionless.
 _LIT_FRACTION = 1.0e-2
 
-#: Reciprocal of the array's ``cos ** q`` angular-response exponent. The
-#: forward model and the reconstruction must use matching exponents, so this
-#: is derived from the model's own constant rather than hard-coded.
-_INVERSE_RESPONSE_EXPONENT = 1.0 / _RESPONSE_EXPONENT
+# Passes of the peak-cosine fixed point in the response inversion. The
+# mapping contracts for the cube geometries that occur, so a dozen passes
+# are ample and cheap (each is one vectorized bisection and one 3x3 solve).
+_FIXED_POINT_PASSES = 12
 
 # A convex cube cannot light more than three faces; more means the array is
 # flat/uncalibrated and the direction is not recoverable.
@@ -132,38 +143,53 @@ def _as_row_batch(channels: npt.ArrayLike, name: str) -> np.ndarray:
     return arr
 
 
-def _normalize_rows(arr: np.ndarray) -> np.ndarray:
-    """Normalize each row by its own max so channel scales compare uniformly."""
-    row_max = np.max(arr, axis=1, keepdims=True)
-    safe = np.where(row_max > 0.0, row_max, 1.0)
-    return arr / safe
+def _solve_direction(weights: FloatArray) -> tuple[FloatArray, FloatArray]:
+    """Least-squares unit direction from per-row weighted face responses.
 
+    Inverts the array's power-law-plus-tail response with a fixed point on
+    the row's peak cosine. Each row satisfies
+    ``w_i = s_i * f(max(0, n_i . u))`` for a strictly-increasing response
+    ``f`` (``c ** q + t * (1 - c)``). Normalizing by the row maximum gives
+    ``r_i = w_i / max(w) = f(c_i) / f(m)`` where ``m`` is the largest face
+    cosine, so for a trial ``m`` the per-face cosines are
+    ``c_i = f ** -1 (r_i * f(m))`` and the direction is the least-squares
+    solve ``u ~ pinv(N^T N) ** -1 ... c`` -- the same homogeneous solve the
+    array is built for. The next trial ``m`` is the peak cosine the new
+    direction predicts; the fixed point is the true peak cosine, and it
+    converges in a handful of passes for any convex-cube geometry.
 
-def _linearize(weights: FloatArray) -> FloatArray:
-    """Undo the array's angular response so channels are proportional to cos.
+    A plain elementwise ``f ** -1`` (the inverse of the old tail-less pure
+    power law) is *not* valid here: the tail breaks the scale-homogeneity
+    the row normalization relies on, and left un-inverted it biases the
+    estimate ~0.1 deg toward grazing incidence. The fixed point is exact
+    (to machine precision) for uniform channel scales, and
+    robust to the modest per-channel scale spread and dark floor a real
+    build carries.
 
-    ``VEMD8080ArrayModel`` reports ``cos(theta) ** q`` with ``q`` chosen so
-    the response is 0.5 at the datasheet's 65 deg half-sensitivity angle.
-    The least-squares solve below assumes each channel is proportional to
-    ``max(0, n . sun)``, so the power must be undone first:
-    ``cos = response ** (1/q)``.
-
-    Without this the estimate is biased toward the array's brightest face
-    (roughly 15% at the half-sensitivity angle) and the bias varies with
-    incidence, so it does not cancel in the normalization.
+    Returns:
+        (directions, cosines): unit directions and the corresponding
+        per-face linearized cosines for the clipping-aware refinement.
     """
-    return weights ** _INVERSE_RESPONSE_EXPONENT
-
-
-def _solve_direction(weights: FloatArray) -> FloatArray:
-    """Least-squares unit direction from per-row weighted face responses."""
-    normalized = _normalize_rows(_linearize(weights))
-    # _NORMAL_PINV is (6, 3): (N, 6) @ (6, 3) -> (N, 3) unit directions.
-    solution = normalized @ _NORMAL_PINV
-    norms = np.linalg.norm(solution, axis=1, keepdims=True)
-    return np.divide(
-        solution, norms, out=np.zeros_like(solution), where=norms > 0.0
-    )
+    row_max = np.max(weights, axis=1, keepdims=True)
+    safe = np.where(row_max > 0.0, row_max, 1.0)
+    r = weights / safe
+    alive = row_max[:, 0] > 0.0
+    m = np.ones(r.shape[0])
+    directions = np.zeros((r.shape[0], 3), dtype=float)
+    for _ in range(_FIXED_POINT_PASSES):
+        cosines = invert_angular_response(r * _angular_response(m)[:, None])
+        solution = cosines @ _NORMAL_PINV
+        norms = np.linalg.norm(solution, axis=1, keepdims=True)
+        directions = np.divide(
+            solution, norms, out=np.zeros_like(solution), where=norms > 0.0
+        )
+        m = np.where(
+            alive,
+            np.clip(directions @ _NORMALS.T, 0.0, None).max(axis=1),
+            1.0,
+        )
+    cosines = invert_angular_response(r * _angular_response(m)[:, None])
+    return directions, cosines
 
 
 def _lit_face_count(row: np.ndarray) -> int:
@@ -174,27 +200,37 @@ def _lit_face_count(row: np.ndarray) -> int:
     return int(np.count_nonzero(row >= _FLOOR_FRACTION * peak))
 
 
-def _refine(weights: FloatArray) -> FloatArray:
+def _refine(weights: FloatArray) -> tuple[FloatArray, FloatArray]:
     """Iteratively reweighted refinement that respects one-sided clipping.
 
     Only faces predicted lit contribute, so a dark backlit face does not drag
-    the estimate toward the sensor's unlit side.
+    the estimate toward the sensor's unlit side. Operates on the
+    linearized (response-inverted) cosines from the fixed-point solve.
+
+    Returns:
+        (directions, cosines): the refined unit directions and the full
+        (unmasked) linearized cosines, which the uncertainty propagation
+        uses as the least-squares residual target.
     """
-    directions = _solve_direction(weights)
+    directions, cosines = _solve_direction(weights)
     for _ in range(_REFINEMENT_PASSES):
         predicted = np.clip(directions @ _NORMALS.T, 0.0, None)
         peaks = np.max(predicted, axis=1, keepdims=True)
         lit = predicted >= _LIT_FRACTION * peaks
-        masked = np.where(lit, weights, 0.0)
+        masked = np.where(lit, cosines, 0.0)
         alive = np.max(masked, axis=1) > 0.0
         if not np.any(alive):
             break
-        refined = _solve_direction(masked)
+        solution = masked @ _NORMAL_PINV
+        norms = np.linalg.norm(solution, axis=1, keepdims=True)
+        refined = np.divide(
+            solution, norms, out=np.zeros_like(solution), where=norms > 0.0
+        )
         directions = np.where(alive[:, None], refined, directions)
-    return directions
+    return directions, cosines
 
 
-def _uncertainty_deg(weights: FloatArray, directions: FloatArray) -> FloatArray:
+def _uncertainty_deg(cosines: FloatArray, directions: FloatArray) -> FloatArray:
     """Propagate the least-squares residual into a 1-sigma angular error.
 
     The residual of the linear fit is the best available in-situ noise
@@ -202,10 +238,15 @@ def _uncertainty_deg(weights: FloatArray, directions: FloatArray) -> FloatArray:
     ``sigma^2 * pinv(N^T N)`` and the angular error follows from its trace.
     A clean signal leaves a near-zero residual and therefore a near-zero
     uncertainty; a noisy array reports a larger one.
+
+    The residual is taken on the *linearized* cosines (the response
+    inverted), not the raw channel weights: the array's reflection tail
+    leaves edge-on faces reading a finite value on the raw weights, which
+    would inflate the residual of a perfectly clean signal. The linearized
+    cosines map that tail back to zero, so a clean signal is residual-free.
     """
-    normalized = _normalize_rows(weights)
     predicted = np.clip(directions @ _NORMALS.T, 0.0, None)
-    residual = normalized - predicted
+    residual = cosines - predicted
     dof = max(6 - 3, 1)
     sigma_sq = np.sum(residual * residual, axis=1) / dof
     trace = float(np.trace(_NORMAL_COV))
@@ -250,8 +291,8 @@ def reconstruct_sun_vector_batch(
         raise ValueError("lit_threshold must be a finite non-negative value")
 
     arr = _as_row_batch(channels, "channels")
-    directions = _refine(arr)
-    uncertainties = _uncertainty_deg(arr, directions)
+    directions, cosines = _refine(arr)
+    uncertainties = _uncertainty_deg(cosines, directions)
 
     estimates: list[SunVectorEstimate] = []
     for row, direction, sigma_deg in zip(arr, directions, uncertainties, strict=True):

@@ -15,7 +15,10 @@ from pocketadcs_sim.sensors.sun_reconstruction import (
     reconstruct_sun_vector,
     reconstruct_sun_vector_batch,
 )
-from pocketadcs_sim.sensors.vemd8080_array import VEMD8080ArrayModel
+from pocketadcs_sim.sensors.vemd8080_array import (
+    VEMD8080_REFLECTION_TAIL_FRACTION,
+    VEMD8080ArrayModel,
+)
 
 
 def _angle_between_deg(a, b) -> float:
@@ -57,7 +60,9 @@ def test_noise_free_reconstruction_recovers_unit_vector(sun):
 
 def test_reconstruction_returns_unit_vector():
     model = VEMD8080ArrayModel(dark_current_a=0.0, noise_rms_a=0.0)
-    channels = model.process_sun(np.array([0.3, -0.5, 0.81]))
+    sun = np.array([0.3, -0.5, 0.81])
+    sun = sun / np.linalg.norm(sun)
+    channels = model.process_sun(sun)
     est = reconstruct_sun_vector(channels)
     assert np.isclose(np.linalg.norm(est.vector), 1.0)
 
@@ -102,7 +107,9 @@ def test_batch_reconstruction_matches_single():
         assert est.valid
         # ADC-limited (see the single-sample test above); the point of this
         # test is that the batched path agrees with the single-sample one.
-        assert _angle_between_deg(est.vector, sun) < 1e-2
+        # 2e-2 deg covers the worst 12-bit quantization case at an oblique
+        # three-face geometry (the unquantized error is 0.0 deg).
+        assert _angle_between_deg(est.vector, sun) < 2e-2
     # Batched and single-sample reconstruction must agree exactly.
     for row, est in zip(channels, ests, strict=True):
         single = reconstruct_sun_vector(row)
@@ -296,7 +303,7 @@ class TestLitFaceFraction:
         return _lit_face_count(row)
 
     def test_clean_two_face_illumination_counts_two(self):
-        sun = np.array([0.5, 0.0, 0.866])
+        sun = np.array([0.5, 0.0, np.sqrt(3.0) / 2.0])  # exact unit vector
         model = VEMD8080ArrayModel(dark_current_a=0.0, noise_rms_a=0.0)
         assert self._lit(model.process_sun(sun)) == 2
 
@@ -473,17 +480,22 @@ class TestAngularResponse:
 
         Not a hard cliff at some smaller angle: a pure Lambertian ``clip(cos,
         0, 1)`` with the datasheet's 0.5-at-65 deg calibration reads only
-        0.423 there. The power law keeps a positive, smoothly-decaying
-        response as the sun grazes the face, reaching zero exactly at 90
-        deg where the geometry genuinely puts the face edge-on.
+        0.423 there. The power law plus the reflection tail keeps a positive,
+        smoothly-decaying response as the sun grazes the face, reaching the
+        finite tail ``VEMD8080_REFLECTION_TAIL_FRACTION`` (package and PCB
+        reflections, the datasheet's Fig. 6) exactly at 90 deg -- not zero.
         """
-        # Just short of 90 deg the +Z face is still measurably lit. At
-        # exactly 90 deg cos() is ~6e-17 in floating point, which is noise
-        # rather than a physical tail, so the tail is asserted approaching
-        # the horizon, not at it.
+        # The tail is asserted at the horizon, where the old clipped-cosine
+        # law read a hard zero. The power-law term vanishes there (c -> 0),
+        # leaving the constant reflection tail.
+        assert self._response_at(90.0) == pytest.approx(
+            VEMD8080_REFLECTION_TAIL_FRACTION, abs=2.0 / 4095
+        )
+        # Monotone decay into the horizon, with no premature cliff: just
+        # short of 90 deg the face is still measurably lit above the tail.
+        assert self._response_at(89.0) > self._response_at(90.0)
         assert self._response_at(89.0) > 0.02
-        assert self._response_at(89.9) > 0.001
-        # Monotone decay into the horizon, with no premature cliff.
+        assert self._response_at(89.9) > VEMD8080_REFLECTION_TAIL_FRACTION
         assert self._response_at(89.9) < self._response_at(89.0)
 
     def test_back_face_stays_dark(self):
