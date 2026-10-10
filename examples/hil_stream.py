@@ -197,7 +197,17 @@ def stream(
     import serial
 
     frame_list = list(frames)
-    serial_port = serial.Serial(port, 115200, timeout=1)
+    serial_port = serial.Serial()
+    serial_port.port = port
+    serial_port.baudrate = 115200
+    serial_port.timeout = 1
+    serial_port.write_timeout = max(1.0, timeout_s)
+    serial_port.xonxoff = False
+    serial_port.rtscts = False
+    serial_port.dsrdtr = False
+    serial_port.dtr = False
+    serial_port.rts = False
+    serial_port.open()
     replies: list[dict] = []
     sent_at: dict[int, float] = {}
     answered: set[int] = set()
@@ -234,8 +244,15 @@ def stream(
                 record({"kind": "unmatched", "raw": line, "parsed": parsed})
 
         serial_port.reset_input_buffer()
-        deadline = time.monotonic() + timeout_s
         for frame in frame_list:
+            # Keep a pipelined window below the target's 64-line message queue.
+            # Any matched reply frees capacity; never wait for one particular
+            # sequence, since valid replies may arrive out of order.
+            window_deadline = time.monotonic() + timeout_s
+            while len(sent_at) - len(answered) >= 16:
+                if time.monotonic() >= window_deadline:
+                    raise TimeoutError("no reply freed the bounded HIL send window")
+                receive()
             line = frame.to_line()
             serial_port.write((line + "\n").encode())
             serial_port.flush()
@@ -255,6 +272,7 @@ def stream(
         # through the exactly-once criterion just because we stopped reading.
         # `receive()` blocks on the port's 1 s read timeout, so a quiet port
         # ends each pass promptly; settle_deadline bounds the extra wait.
+        deadline = time.monotonic() + timeout_s
         settle_deadline = time.monotonic() + 0.2
         while time.monotonic() < deadline:
             if len(answered) < len(frame_list) or serial_port.in_waiting:
@@ -267,9 +285,9 @@ def stream(
 
 def parse_reply(line: str) -> dict:
     parts = line.split()
-    if len(parts) != 11 or parts[0] != "R":
-        raise ValueError(f"Expected 11 fields in R reply, got {len(parts)}")
-    return {
+    if len(parts) not in (11, 13) or parts[0] != "R":
+        raise ValueError(f"Expected 11 or 13 fields in R reply, got {len(parts)}")
+    result = {
         "seq": int(parts[1]),
         "angle_deg": float(parts[2]),
         "rate_mag": float(parts[3]),
@@ -278,6 +296,12 @@ def parse_reply(line: str) -> dict:
         "flags": int(parts[6]),
         "quaternion": tuple(float(x) for x in parts[7:11]),
     }
+    if len(parts) == 13:
+        # Zephyr times onboard ephemeris and attitude computation separately.
+        # Validate the trailer rather than silently accepting arbitrary extras.
+        result["ephemeris_cycles"] = int(parts[11])
+        result["attitude_cycles"] = int(parts[12])
+    return result
 
 
 @dataclass(frozen=True, slots=True)

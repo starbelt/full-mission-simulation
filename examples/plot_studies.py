@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
@@ -94,14 +95,14 @@ def fig_ablation(rows, tag):
     # from an explicit floor is honest on a log scale.
     x = np.arange(len(stats))
     floor = 1e-2
-    for xi, (m, sd, hi) in enumerate(zip(rms, spread, p95)):
+    for xi, (m, sd, _hi) in enumerate(zip(rms, spread, p95, strict=True)):
         ax.vlines(xi, floor, m, color=ACCENT, lw=2.2, alpha=0.55)
         ax.vlines(xi, m - sd, m + sd, color=INK, lw=1.1)
         ax.plot([xi - 0.13, xi + 0.13], [m + sd] * 2, color=INK, lw=1.1)
         ax.plot(xi, m, "o", ms=7, color=ACCENT, zorder=3)
     ax.plot([], [], "o", ms=7, color=ACCENT, label="RMS attitude error")
     ax.plot([], [], "o", ms=4.5, color=MUTED, label="95th percentile")
-    for xi, (m, hi) in enumerate(zip(rms, p95)):
+    for xi, (m, hi) in enumerate(zip(rms, p95, strict=True)):
         ax.plot(xi, hi, "D", ms=4.5, color=MUTED, zorder=3)
         ax.annotate(f"{m:.3f}", (xi + 0.17, m), fontsize=7.5, color=INK,
                     va="center")
@@ -114,8 +115,8 @@ def fig_ablation(rows, tag):
                  fontsize=10, loc="left")
     ax.legend(frameon=False, fontsize=8, loc="upper left")
 
-    bars = ax2.bar(x, valid, color=[WARN if v < 50 else MUTED for v in valid],
-                   width=0.62)
+    ax2.bar(x, valid, color=[WARN if v < 50 else MUTED for v in valid],
+            width=0.62)
     for xi, v in enumerate(valid):
         ax2.annotate(f"{v:.1f}%", (xi, v), textcoords="offset points",
                      xytext=(0, 2), ha="center", fontsize=7, color=INK)
@@ -126,7 +127,7 @@ def fig_ablation(rows, tag):
     ax2.set_xticklabels(labels)
     ax2.set_xlabel("ablation variant (one noise source each; last row = all three)")
 
-    for xi, (v, s) in enumerate(stats):
+    for xi, (_v, s) in enumerate(stats):
         if s["valid"].mean() * 100 < 50:
             ax2.annotate("rejected-sample\nartifact", (xi, 8), ha="center",
                          fontsize=6.5, color=WARN, fontweight="bold")
@@ -192,7 +193,7 @@ def fig_timing():
         parts = parts[:2]
         names, colors = names[:2], colors[:2]
     bars = ax.bar(names, parts, color=colors, width=0.55)
-    for b, v in zip(bars, parts):
+    for b, v in zip(bars, parts, strict=True):
         ax.annotate(f"{v:.2f} us\n({v / tot * 100:.1f}%)",
                     (b.get_x() + b.get_width() / 2, v),
                     textcoords="offset points", xytext=(0, 4),

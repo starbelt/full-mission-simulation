@@ -17,7 +17,6 @@ import tempfile
 from pathlib import Path
 
 import numpy as np
-from scipy.spatial.transform import Rotation
 
 REPO = Path(r"C:\Users\drago\Nextcloud\School - NextCloud\Research\pocketadcs-sim")
 sys.path.insert(0, str(REPO / "examples"))
@@ -77,7 +76,7 @@ if __name__ == "__main__":
     td = Path(tempfile.mkdtemp(prefix="fwerr_"))
     (td / "e.cpp").write_text(CPP, encoding="ascii")
     sys.path.insert(0, str(REPO / "tests"))
-    from test_ads_math_host import find_usable_compiler, _env_for
+    from test_ads_math_host import _env_for, find_usable_compiler
 
     cxx = find_usable_compiler(td)
     r = subprocess.run([str(cxx), "-std=c++17", "-O2",

@@ -44,9 +44,9 @@ FLAG_DEGENERATE = 16
 
 
 def parse_reply(line):
-    """Parse a 12-field R line, or None if it is not one."""
+    """Parse a 13-token R line, or None if it is not one."""
     q = line.split()
-    if len(q) < 12 or q[0] != "R":
+    if len(q) != 13 or q[0] != "R":
         return None
     try:
         return {
@@ -57,8 +57,8 @@ def parse_reply(line):
             "sun_norm": float(q[5]),
             "flags": int(q[6]),
             "q": [float(x) for x in q[7:11]],
-            "cyc_eph": int(q[11 - 1]),
-            "cyc_ads": int(q[12 - 1]),
+            "cyc_eph": int(q[11]),
+            "cyc_ads": int(q[12]),
         }
     except ValueError:
         return None
@@ -76,6 +76,53 @@ def angle_error_deg(q_est, q_truth):
     return float(np.degrees(2.0 * np.arccos(min(1.0, max(-1.0, d)))))
 
 
+def exchange_frames(port, frames, timeout_s):
+    """Send one frame at a time and match complete newline-delimited replies.
+
+    Bounded outstanding data avoids filling the USB-Serial/JTAG RX FIFO.
+    Reading with readline also preserves lines split across USB packets.
+    """
+    replies = {}
+    latencies = {}
+    deadline = time.monotonic() + timeout_s
+    for frame in frames:
+        sent = time.monotonic()
+        port.write((frame.to_line() + "\n").encode())
+        port.flush()
+        while time.monotonic() < deadline:
+            raw = port.readline()
+            if not raw:
+                continue
+            reply = parse_reply(raw.decode(errors="replace").strip())
+            if reply is None or reply["seq"] < 0:
+                continue
+            seq = reply["seq"]
+            if seq not in replies:
+                replies[seq] = reply
+                latencies[seq] = (time.monotonic() - sent) * 1e3
+            if seq == frame.seq:
+                break
+        else:
+            break
+    return replies, latencies
+
+
+def open_board_port(port):
+    """Set modem line state *before* Windows opens the USB serial device."""
+    link = serial.Serial()
+    link.port = port
+    link.baudrate = 115200
+    link.timeout = 0.2
+    link.write_timeout = 10
+    link.xonxoff = False
+    link.rtscts = False
+    link.dsrdtr = False
+    link.dtr = False
+    link.rts = False
+    link.open()
+    return link
+
+
 def main():
     port = sys.argv[1] if len(sys.argv) > 1 else "COM5"
     n_frames = int(sys.argv[2]) if len(sys.argv) > 2 else 3000
@@ -85,12 +132,7 @@ def main():
     frames = list(H.build_frames(n_frames / 10.0, 10.0, sensors, 7))
     print(f"{len(frames)} frames, sensors={sensors}, port={port}")
 
-    s = serial.Serial(port, 115200, timeout=0.2, write_timeout=10,
-                      xonxoff=False, rtscts=False, dsrdtr=False)
-    # Never touch DTR/RTS: on this board a manual pulse latches the chip into
-    # the ROM download stub, where writes succeed and are silently discarded.
-    s.dtr = False
-    s.rts = False
+    s = open_board_port(port)
     s.reset_input_buffer()
 
     # Prove the board is live before trusting anything it says.
@@ -104,36 +146,7 @@ def main():
     else:
         print("banner seen: firmware is up")
 
-    # Pace the writes. A single multi-kilobyte write blocks: the board drains
-    # its RX FIFO at the UART line rate, and the host's write blocks once the
-    # driver buffer fills. A bounded outstanding-window keeps pressure on the
-    # pipe without deadlocking on it, and the window is small enough to stay
-    # well inside the FIFO.
-    outstanding = {}
-    window = 24
-    idx = 0
-    sent_at = time.monotonic()
-    deadline = sent_at + timeout_s
-    while idx < len(frames) and time.monotonic() < deadline:
-        while len(outstanding) < window and idx < len(frames):
-            f = frames[idx]
-            s.write((f.to_line() + "\n").encode())
-            s.flush()
-            outstanding[f.seq] = True
-            idx += 1
-        chunk = s.read(512)
-        if chunk:
-            t_rx = time.monotonic()
-            for line in chunk.decode(errors="replace").splitlines():
-                r = parse_reply(line.strip())
-                if r is None or r["seq"] < 0:
-                    continue
-                r["t_rx"] = t_rx
-                replies[r["seq"]] = r
-                order.append(r["seq"])
-                outstanding.pop(r["seq"], None)
-        if idx >= len(frames) and not outstanding:
-            break
+    replies, latencies = exchange_frames(s, frames, timeout_s)
     s.close()
 
     got = len(replies)
@@ -152,13 +165,13 @@ def main():
             eph_us.append(r["cyc_eph"] / CORE_HZ * 1e6)
         if r["cyc_ads"] >= 0:
             ads_us.append(r["cyc_ads"] / CORE_HZ * 1e6)
-        rtt_ms.append((r["t_rx"] - sent_at) * 1e3)
+        rtt_ms.append(latencies[f.seq])
 
     if not errors:
         print("no scored frames -- board did not answer")
         return 1
 
-    tot = [a + b for a, b in zip(eph_us, ads_us)] if eph_us and ads_us else []
+    tot = [a + b for a, b in zip(eph_us, ads_us, strict=True)] if eph_us and ads_us else []
     print()
     print("ON-DEVICE, core 0 @ 240 MHz")
     print(f"  ephemeris        median {statistics.median(eph_us):8.1f} us")
