@@ -44,6 +44,9 @@ class FakeSerial:
         self.writes = []
         self.closed = False
 
+    def open(self):
+        assert self.dtr is False and self.rts is False
+
     def reset_input_buffer(self):
         pass
 
