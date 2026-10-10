@@ -1,0 +1,66 @@
+{
+  "hardware_access": false,
+  "embedded_performance": null,
+  "results": {
+    "slewos": {
+      "frames": 53641,
+      "duration_s": 2681.974849858644,
+      "strict_acks": 5,
+      "final_target_error_deg": 0.02846167315102706,
+      "eclipse_samples": 0,
+      "matches_approved_v3_exactly": true,
+      "source_and_executable_hashes_verified": true,
+      "files": {
+        "manifest.json": "03646ce5514e3d7e16ca43df83183bcb768b3aacef3a58a9d880dc5bc6a91cd3",
+        "samples.jsonl": "d78aef25b058fe0c336cd584ee97579b758b226d2b59796061b26aa37b133bdd",
+        "summary.json": "5b9ea4c6ba3adb7bfaed75760fb31898d7c685dd77317e47e870888e3507a8a9",
+        "wire.jsonl": "eb7524b34440fcc4087c1d5ed0d0a8fa36cf57dcae0fecf3133e52d963145531"
+      }
+    },
+    "target3d": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "strict_acks": 4,
+      "final_target_error_deg": 0.0075581127842401456,
+      "eclipse_samples": 0,
+      "matches_approved_v3_exactly": true,
+      "source_and_executable_hashes_verified": true,
+      "files": {
+        "manifest.json": "ba68760d2086594ba5343a856b4aaee6aaad5d9bfec4cefe679bfa7ff6ce7d22",
+        "samples.jsonl": "c04fe94a4ddddb9970fd96d6a3744850566d4b49c6bae38b5e2f72a622ded607",
+        "summary.json": "3c0c8a87519e446dc8e325c4daa5430a004d573393fe3fb99b37a8ed0ba0d3c8",
+        "wire.jsonl": "961c7aecb34c9d709ed52bbcd2eb3082a5317dbf60253a20133c315fd9c55682"
+      }
+    },
+    "eclipse": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "strict_acks": 4,
+      "final_target_error_deg": 0.007558120885474125,
+      "eclipse_samples": 1601,
+      "matches_approved_v3_exactly": true,
+      "source_and_executable_hashes_verified": true,
+      "files": {
+        "manifest.json": "2f3b8e924319b7f361f8306e8f2fa3dc91fb14556861a49859f57d796f9a967f",
+        "samples.jsonl": "a5f6acd8e63baa040bcd7e5a05d31863a51794a932903ec29fa0fd099320b57d",
+        "summary.json": "adc81e6cdf7e046ad9a60030f1d11bf9ab4ec940ca97ce87c425b35cb9f75462",
+        "wire.jsonl": "32a32b004f36fd501331ee35cd2f3b3d15e3400e4d5bdfea2799815f563b7a5d"
+      }
+    },
+    "biased_noisy": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "strict_acks": 4,
+      "final_target_error_deg": 1.0101981109026688,
+      "eclipse_samples": 1601,
+      "matches_approved_v3_exactly": true,
+      "source_and_executable_hashes_verified": true,
+      "files": {
+        "manifest.json": "72ef09dce78df3b7ee6865256f79e10088e369332d6414a68f936e4127fcb0d5",
+        "samples.jsonl": "0ae59f5bed471a730a4db3446813a422865cf740f0d251ff9cade4bd1f4f3f09",
+        "summary.json": "657b01723a59530b3bf5730f3f7accd52bffad083789282931aa75258560f865",
+        "wire.jsonl": "30c28ca1d3b37f2b4012f4f569fbd35f4302f28e597320d5752d0ed687e7d4ba"
+      }
+    }
+  }
+}

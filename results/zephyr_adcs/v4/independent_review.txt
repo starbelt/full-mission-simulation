@@ -1,0 +1,44 @@
+Independent review: t_8fca685e final CR-framing v4
+VERDICT: APPROVE for local source/build-artifact correction only. No blocking defects found. Not hardware acceptance or flashing authorization.
+
+Scope inspected:
+- source_delta.patch, exact current esp32/src/command_framing.h and esp32/zephyr/src/main.cpp.
+- tests/firmware/adcs_protocol_driver.cpp, adcs_ephemeris_stdio.cpp, zephyr_main_driver.cpp; both requested Python test files and protocol field/command parsing.
+- Final target/ only; rejected target_pre_tail_trim and *_pre_tail_trim evidence excluded.
+
+Findings:
+- CR is mapped to one space, not erased: split operators/numeric tokens cannot be joined into the former destructive reset alias or altered numeric values.
+- Actual ISR and diagnostic native driver trim trailing space/tab only after wire capacity accounting; internal separators survive. CRLF XI, health and legacy responses match LF.
+- Invalid binary bytes and overlong lines drain through LF and refuse once; sticky invalid/overflow flags survive tail trimming. Nonzero wheel state, pending state and subsequent accepted frames are exercised.
+- Actual ISR integration tests compile the current target main directly with kernel/transport stubs. Malformed dispatch snapshots compare every Session byte; health/time values are fixed stubs, not hardware measurements.
+- Native ephemeris driver intentionally does not tail-trim; protocol FieldReader accepts trailing mapped spaces. Its CR/reset/numeric/binary/overlong regression passed.
+- Artifact verifier confirms only framing/main firmware differ from immutable v3, accepted physics unchanged, six recorded ISR proofs and eight accepted fresh/persistent native cases valid.
+
+Executed from C:/Users/drago/Nextcloud/School - NextCloud/Research/pocketadcs-sim:
+1. .venv/Scripts/python.exe -m pytest -q tests/test_adcs_protocol_host.py tests/test_zephyr_adcs_integration.py
+   Exit 0: 70 passed in 6.03s; no skips.
+2. .venv/Scripts/python.exe -m ruff check tests/test_adcs_protocol_host.py tests/test_zephyr_adcs_integration.py
+   Exit 0: All checks passed.
+3. .venv/Scripts/python.exe -m ruff check tests/test_adcs_protocol_host.py tests/test_zephyr_adcs_integration.py tests/test_hil_accepted_adapter.py
+   Exit 0: All checks passed (all three handoff Python test files).
+4. git diff --check
+   Exit 0; no whitespace errors. Existing uv.lock LF-to-CRLF warning only.
+5. .venv/Scripts/python.exe results/zephyr_adcs/v4/verify_artifacts.py
+   Exit 0: all assertions passed, eight native cases checked; six proof records validated. This required script rewrote verification.json with verified results.
+6. Independent .venv/Scripts/python.exe -c raw-byte hashlib.sha256(Path(...).read_bytes()) assertions, separate from verifier.
+   Checked both final flash_artifacts against build_manifest.json; checked framing/main current, target and retained handoff source bytes against both build_manifest.json and handoff_hashes.json. Independently checked all 11 current/retained handoff entries: all match.
+7. Independent .venv/Scripts/python.exe -c subprocess raw-wire replay of final isr_proof/zephyr_main/target.exe isr-script using bytes.fromhex(record["script_hex"]) for every actual_isr_proof.json record.
+   Exit 0: 6/6 exact recorded outputs reproduced, MOMENTUM 1 and TRANSACTION 1 required, TRANSACTION 0 absent, all subsequent Y frames identical to baseline.
+
+Independently calculated SHA256 (raw bytes):
+- target/build/zephyr/zephyr/zephyr.signed.bin (188204 bytes): 7bedadeeb32f0c9c1da93ff6a15f7a38b2b60f68aa91012b3048dcab95834f33
+- target/build/mcuboot/zephyr/zephyr.bin (37344 bytes): 0c58220e5450f8c9761d99b23adb9c27a8b10a4b508f6fcd74fa0fdb229e4844
+- esp32/src/command_framing.h (657 bytes): 6ca25a14ad7668dea8b77ae56fcbcbbaa29b7ae267d1c029c2a8905245fbab7f
+- esp32/zephyr/src/main.cpp (12592 bytes): 30d49015d22cb03efa1f96cba3e4b5aae0ab398f768fd65351caf410614ab1a4
+- Verifier-recomputed logical identity build ID: 8b97f32191cea59a0b8038c41e64ec3be346c5d7921cc7fec3342d88f109e7bc
+
+Limitations/issues:
+- No serial, COM5/COM7 access, esptool, flash, reset, board task or lifecycle changes performed. Hardware stack watermark, RX behavior and runtime timing remain unverified.
+- zephyr.signed.bin is the build artifact filename; manifest MCUboot CONFIG_BOOT_SIGNATURE_TYPE_NONE=y means this review makes no cryptographic-signature/authenticity claim.
+- Repository already contains unrelated modified/untracked work; it was left untouched.
+- No implementation/test changes made. Reviewer created only independent_review.txt, aside from verification.json rewritten by the explicitly requested verifier and ordinary local test/build cache artifacts.

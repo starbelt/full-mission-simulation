@@ -1,0 +1,70 @@
+Independent review of t_c44ec5d2: APPROVED for the BUILD-ONLY stage.
+
+No implementation files were edited. Review artifacts only were added under
+results/zephyr_adcs/v1. No serial port was opened and nothing was flashed.
+
+Verified by fresh execution:
+- 186 focused core/protocol/HIL/target-integration/Sun/resource/flash tests pass
+  in 37.21 seconds; 3 expected ERFA future-year warnings are retained.
+- 8 additional estimator/sensor-source/math/onboard-bench tests pass in 5.15 s.
+- Fresh actual Zephyr build via esp32/build_zephyr.sh exits 0. Complete log:
+  review_target_build.log; exit record: review_target_build.exit.
+- Build identity e6b87a559797bc135e9ec7ad8a2d36acf33f005a7b0a2e302f61bf36925309c4
+  matches retained identity and its logical LF/source-hash input calculation.
+- Fresh signed application SHA256 is byte-identical to retained application:
+  2efaace3049efc60f56c7fecc9b42dff88213c75c0cb1b061c18253f028bbc56.
+- Rebuilt MCUboot SHA256 is
+  0971c43e9dec27692be542f4a072d5d6f0f5bf4701a5a377bce552ecb7dbaa0b.
+  Difference from retained MCUboot is confined to compile-time timestamp text
+  and the final checksum/hash. The retained original MCUboot remains the
+  exact later-flash artifact, with its manifest SHA256 verified independently.
+- Actual size tool agrees: application text/data/BSS=159048/5800/166676;
+  MCUboot=31112/6144/13248 bytes. Both link successfully with memory fit.
+- Fresh target main stack allocation is 1296 bytes. Retained target compiler
+  call-chain evidence independently checked: ephemeris chain lower bound
+  11136 bytes against 16384 configured. This is not a runtime watermark.
+
+Fresh native exact-C++ surrogate rerun:
+- Complete SlewOS: 53641 frames, 2681.974849858644 seconds,
+  physical final-target error 0.02846167315102706 degrees.
+- 3D: 6001 frames, error 0.0075581127842401456 degrees.
+- Eclipse: 6001 frames, error 0.007558120885474125 degrees.
+- Biased/noisy: 6001 frames, error 1.0101981109026688 degrees.
+All four reproduce approved v3 summaries exactly. These are HOST correctness
+results, not embedded performance. Each fresh result was independently checked
+against raw wire records and samples: contiguous unique joined sequences,
+strict finite ACKs/replies, payload bound, complete durations, estimate/control
+input equality, returned/applied wheel commands, and normalized full-angle
+physical target scoring. Executable and current source SHA256s were verified.
+Files: review_native/; review_native.log; review_native.exit;
+review_rerun_verification.json.
+
+Artifact audit:
+- 27 source hashes, equality to retained staged sources.
+- 1519 retained target-file hashes and 3869 dependency hashes verified.
+- Both retained flash binaries' hashes/sizes/addresses/partition bounds checked.
+- Original full native results independently audited as well:
+  review_verification.json; reviewer audit script: review_verify.py.
+- Inspected real target ISR, health API, shared reference callback, cycle
+  boundaries, UART framing/recovery, static session and in-place transaction.
+- Capacity 64 accepted / 65 refused and rollback, stack API error=-1,
+  counters counting failed puts only, legacy reply framing and wrap-safe cycles
+  are covered by passing executed tests. Saved RED logs were inspected.
+- Config enables INIT_STACKS, THREAD_STACK_INFO, STACK_SENTINEL and ASSERT;
+  timer uses Xtensa CCOUNT at 240000000 configured Hz. Desired-profile lookup,
+  parsing, formatting and transport are explicitly outside reported counters.
+- Post-frame XH documents the one-frame health lag. Portable health setters
+  cannot forge target diagnostics. Watchdog-reset flash procedure unchanged.
+
+Nonblocking caveats:
+- Ruff on the two protocol/integration test files exits 1 with 8 import,
+  line-length and explicit-zip-strict findings. These are formatting/clarity
+  nits, not failed functional acceptance; no lint-clean claim is made.
+- Target logs retain existing Kconfig and printf float-promotion warnings.
+- Stack lower bound excludes libm/ABI runtime overhead. Actual peak, RX-drop
+  soak and hardware stage timings require the later authorized runtime stage.
+- Full project pytest suite was not independently rerun; 194 focused tests
+  passed. No claim that every repo test passes.
+- Optional uncloned west projects prevent global freeze; declared manifest,
+  cloned actual HEADs and exact used dependency hashes are retained instead.
+- This review approves integration/build only, not overall hardware evaluation.

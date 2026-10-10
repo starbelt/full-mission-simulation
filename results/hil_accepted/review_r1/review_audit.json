@@ -1,0 +1,34 @@
+[
+  {
+    "case": "slewos",
+    "frames": 53641,
+    "duration_s": 2681.974849858644,
+    "independent_final_target_error_deg": 0.02846167315102706,
+    "source_hashes_match": true,
+    "eclipse_samples": 0
+  },
+  {
+    "case": "target3d",
+    "frames": 6001,
+    "duration_s": 300.0,
+    "independent_final_target_error_deg": 0.0075581127842401456,
+    "source_hashes_match": true,
+    "eclipse_samples": 0
+  },
+  {
+    "case": "eclipse",
+    "frames": 6001,
+    "duration_s": 300.0,
+    "independent_final_target_error_deg": 0.007558120885474125,
+    "source_hashes_match": true,
+    "eclipse_samples": 1601
+  },
+  {
+    "case": "biased_noisy",
+    "frames": 6001,
+    "duration_s": 300.0,
+    "independent_final_target_error_deg": 1.0101981109026688,
+    "source_hashes_match": true,
+    "eclipse_samples": 1601
+  }
+]

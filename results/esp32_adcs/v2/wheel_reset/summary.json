@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "scope": "real device bookkeeping-only replay diagnostic; not physical pointing; retained actual raw sensor frames, no truth attitudes/reference vectors",
+  "pre_reset_inferred_device_wheel_speed_rad_s": [
+    19.685168195718646,
+    -183.86097859327216,
+    -107.65454128440362
+  ],
+  "live_body_torque": [
+    -4.977e-06,
+    4.655e-05,
+    1.9424e-05
+  ],
+  "live_wheel_torque": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "fresh_body_torque": [
+    -4.977e-06,
+    4.655e-05,
+    1.9424e-05
+  ],
+  "fresh_wheel_torque": [
+    4.977e-06,
+    -4.655e-05,
+    -1.9424e-05
+  ],
+  "suppressed_axes": [
+    true,
+    true,
+    true
+  ],
+  "health": [
+    [
+      2550142,
+      125,
+      1,
+      5084,
+      1
+    ],
+    [
+      2555439,
+      125,
+      1,
+      5084,
+      1
+    ],
+    [
+      2555442,
+      125,
+      1,
+      5084,
+      0
+    ],
+    [
+      2555474,
+      125,
+      1,
+      5084,
+      1
+    ]
+  ],
+  "XC_preserves_estimator_timestamp_and_wheel_state": true,
+  "XZ_clears_estimator_timestamp_fix_and_wheel_state_without_hardware_reset": true
+}

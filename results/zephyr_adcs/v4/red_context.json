@@ -1,0 +1,16 @@
+{
+  "stage": "C:\\Users\\drago\\AppData\\Local\\hermes\\cache\\scratch\\t_8fca685e_cr_red",
+  "command": [
+    "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_zephyr_adcs_integration.py",
+    "tests/test_adcs_protocol_host.py",
+    "-k",
+    "malformed_binary or binary_reset or native_ephemeris_framing or crlf_reset or valid_reset",
+    "-q"
+  ],
+  "implementation": "immutable v3 target sources and native drivers",
+  "tests": "current corrected v4 regression tests and observer",
+  "exit": 1
+}

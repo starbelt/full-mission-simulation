@@ -1,0 +1,85 @@
+{
+  "config": {
+    "duration_s": 300.0,
+    "dt_s": 0.05,
+    "hub_inertia_kg_m2": [
+      0.02,
+      0.025,
+      0.03
+    ],
+    "start_attitude": [
+      0.9887710779360422,
+      0.14943813247359922,
+      0.0,
+      0.0
+    ],
+    "target_attitude": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "proportional_gain": 0.35,
+    "derivative_gain": 0.15,
+    "wheel_set": null,
+    "slewos_run_dir": null,
+    "slewos_case_id": null,
+    "slewos_method": null,
+    "eclipse_windows": [],
+    "sensors": "ideal",
+    "output_dir": "results\\adcs_closed_loop\\v1",
+    "tag": "target_3d_ideal"
+  },
+  "error": {
+    "final_attitude_error_deg": 0.006429119643196187,
+    "max_attitude_error_deg": 0.3207930025049182,
+    "final_estimate_error_deg": 0.00021031271564168408,
+    "max_estimate_error_deg": 0.009624438805657594
+  },
+  "wheels": {
+    "max_speed_bound_rad_s": 1675.5160819145563,
+    "max_abs_wheel_speed_rad_s": 23.418003252079348,
+    "max_acceleration_cap_rad_s2": 200.0,
+    "saturated_steps": 0.0,
+    "max_commanded_applied_gap_nm": 0.0
+  },
+  "planner": {
+    "is_planner_generated": false,
+    "source": "externally supplied smoothstep reference profile; the implemented planner is single-axis, so this is not planner output",
+    "order": [],
+    "planner_scope": "single-axis rest-to-rest sequencing of scalar slew angles; no multi-axis planner is implemented"
+  },
+  "plant": {
+    "final_attitude": [
+      0.9393898447456066,
+      0.10390154514906784,
+      0.27705131636264635,
+      0.1731870566935826
+    ],
+    "final_body_rate_rad_s": [
+      5.064608388005151e-06,
+      7.120267217995415e-05,
+      1.1976812988051253e-05
+    ],
+    "final_wheel_speed_rad_s": [
+      -0.030981262700105455,
+      -0.5444341398275955,
+      -0.1098909950520572
+    ],
+    "commanded_target_attitude": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "final_attitude_error_to_target_deg": 0.0064291198699548925
+  },
+  "truth_cross_check": {
+    "max_controller_input_vs_truth_deg": 0.0,
+    "final_controller_input_vs_truth_deg": 0.0
+  },
+  "artifacts": {
+    "json": "target_3d_ideal.json",
+    "csv": "target_3d_ideal.csv"
+  }
+}

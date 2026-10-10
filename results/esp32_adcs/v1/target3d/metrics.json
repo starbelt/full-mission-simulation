@@ -1,0 +1,141 @@
+{
+  "case": "target3d",
+  "fixture_sha256": "ba68760d2086594ba5343a856b4aaee6aaad5d9bfec4cefe679bfa7ff6ce7d22",
+  "build_id": "e6b87a559797bc135e9ec7ad8a2d36acf33f005a7b0a2e302f61bf36925309c4",
+  "frame_replies": 6001,
+  "wall_s": 171.81200000003446,
+  "simulated_duration_s": 300.0,
+  "failure": null,
+  "physical_summary": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "final_target_error_deg": 0.0075581127842401456,
+    "final_truth_attitude": [
+      0.939393433419318,
+      0.10391459955106816,
+      0.2770427739359811,
+      0.17317342365000352
+    ],
+    "commanded_target": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "max_controller_input_vs_truth_deg": 0.002693425149325349,
+    "max_abs_rate_rad_s": [
+      0.00038452463022296314,
+      0.0030627253955182623,
+      0.001326318764587991
+    ],
+    "max_abs_wheel_speed_rad_s": [
+      2.352217125382269,
+      23.418394495412922,
+      12.169388379204895
+    ],
+    "eclipse_samples": 0,
+    "eclipse_max_seam_error_deg": 0.0,
+    "reacquisition_seam_error_deg": null,
+    "stage_execution_time": null,
+    "device": "actual COM5 ESP32-S3; hardware CCOUNT stages; accepted unchanged physical adapter"
+  },
+  "health": [
+    [
+      81018,
+      0,
+      0,
+      14092,
+      0
+    ],
+    [
+      116593,
+      0,
+      0,
+      5068,
+      1
+    ],
+    [
+      143862,
+      0,
+      0,
+      5068,
+      1
+    ],
+    [
+      171124,
+      0,
+      0,
+      5068,
+      1
+    ],
+    [
+      198365,
+      0,
+      0,
+      5068,
+      1
+    ],
+    [
+      225512,
+      0,
+      0,
+      5068,
+      1
+    ],
+    [
+      252592,
+      0,
+      0,
+      5068,
+      1
+    ],
+    [
+      252823,
+      0,
+      0,
+      5068,
+      1
+    ]
+  ],
+  "minimum_observed_stack_headroom_bytes": 5068,
+  "counter_hz": 240000000,
+  "timing_scope": "CCOUNT four stages only; excludes profile, parsing, formatting, transport",
+  "stage_ms": {
+    "ephemeris": {
+      "p50": 11.769087500000001,
+      "p95": 11.792275,
+      "p99": 11.7993375,
+      "max": 12.1958625
+    },
+    "estimator": {
+      "p50": 0.54935,
+      "p95": 0.56095,
+      "p99": 0.5626875,
+      "max": 0.5651
+    },
+    "controller": {
+      "p50": 0.10380833333333332,
+      "p95": 0.10691666666666667,
+      "p99": 0.1072375,
+      "max": 0.12794166666666665
+    },
+    "allocation": {
+      "p50": 0.05867083333333333,
+      "p95": 0.0608625,
+      "p99": 0.06114166666666667,
+      "max": 0.06160416666666666
+    },
+    "instrumented_total": {
+      "p50": 12.479666666666667,
+      "p95": 12.504608333333334,
+      "p99": 12.513083333333332,
+      "max": 12.811979166666665
+    }
+  },
+  "serial_rtt_ms": {
+    "p50": 31.0,
+    "p95": 32.0,
+    "p99": 32.0,
+    "max": 32.0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "driver_sha256": "cd7e8d4622da12ac8c13c292dde894dfaf225436146e9f2f4f47861f78c21e1e",
+  "driver_path": "C:\\Users\\drago\\zephyrproject\\zephyr\\drivers\\timer\\xtensa_sys_timer.c",
+  "CCOUNT_read": "xtensa_sys_timer.c:50-55",
+  "cycle_get_32": "xtensa_sys_timer.c:138-140",
+  "live_XI_hz": 240000000,
+  "configuration_source": "approved v5 application CONFIG_XTENSA_CCOUNT_HZ and CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC=240000000",
+  "measurement": "elapsed service, interrupt/preemption included; ISR framing, queue wait, suffix and TX excluded",
+  "external_clock_metrology": false,
+  "host_RTT_clock": "perf_counter_ns / QueryPerformanceCounter"
+}

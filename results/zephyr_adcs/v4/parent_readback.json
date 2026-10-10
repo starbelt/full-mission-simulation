@@ -1,0 +1,21 @@
+{
+  "build_id": "8b97f32191cea59a0b8038c41e64ec3be346c5d7921cc7fec3342d88f109e7bc",
+  "all_exact_image_and_source_hashes_match": true,
+  "hashes": {
+    "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v4\\target\\build\\mcuboot\\zephyr\\zephyr.bin": "0c58220e5450f8c9761d99b23adb9c27a8b10a4b508f6fcd74fa0fdb229e4844",
+    "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v4\\target\\build\\zephyr\\zephyr\\zephyr.signed.bin": "7bedadeeb32f0c9c1da93ff6a15f7a38b2b60f68aa91012b3048dcab95834f33",
+    "esp32/src/adcs_protocol.h": "14f5855faf2c3e07ef96460e89ce16d8f6981334f0d0b2aa9ccffb335f6fd200",
+    "esp32/src/command_framing.h": "6ca25a14ad7668dea8b77ae56fcbcbbaa29b7ae267d1c029c2a8905245fbab7f",
+    "esp32/zephyr/src/main.cpp": "30d49015d22cb03efa1f96cba3e4b5aae0ab398f768fd65351caf410614ab1a4",
+    "examples/hil_closed_loop_run.py": "e65c8865a906ea6a01282c5f440aeb680bb50384216fc7ace89bd01611acd274",
+    "docs/esp32_closed_loop.md": "dd5c414e897a15a29b2a2767b2ecd1ea0e6bcda6ead5b22738e581862bfafb7f",
+    "tests/test_adcs_protocol_host.py": "9cb5629e968bb3d5fdee8f793579667d3ed8436d4595aa3a6a186af035602bb8",
+    "tests/test_hil_accepted_adapter.py": "2121c42832eb8e5894939824460043850c7890451b53c6c7c53e92fc25496769",
+    "tests/test_zephyr_adcs_integration.py": "9701860ffbcb9d1793c99010710fce8ebd4a499cb3afccc1ca13c71db13a2561",
+    "tests/firmware/adcs_protocol_driver.cpp": "c17707dfca9a449bf943de5c52136d0b5dd16fbbb5a1dd791c65e7d577f6c72c",
+    "tests/firmware/adcs_ephemeris_stdio.cpp": "1e15976893eb671b77cf766c4e1a5f1d5fa7720d62ec7dacfa85219891f5d856",
+    "tests/firmware/zephyr_main_driver.cpp": "834783d472fd2b68f755d19f3492bc698c56c08b1860456fd92ea4cc1894db72"
+  },
+  "independent_review": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v4\\independent_review.txt",
+  "hardware_access": false
+}

@@ -1,0 +1,148 @@
+{
+  "case": "eclipse",
+  "fixture_sha256": "c8d3290276507e8192c258cf722d556b4632c643e88fa897de429baa5fcc1dd9",
+  "build_id": "a1218da36d2248d7b439bdb91e0873726001a62a2ca532b31b5ec1144536780c",
+  "frame_replies": 6001,
+  "wall_s": 171.473917299998,
+  "simulated_duration_s": 300.0,
+  "failure": null,
+  "physical_summary": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "final_target_error_deg": 0.007558120885474125,
+    "final_truth_attitude": [
+      0.9393934334508229,
+      0.10391459952344738,
+      0.277042773895417,
+      0.17317342356057108
+    ],
+    "commanded_target": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "max_controller_input_vs_truth_deg": 0.003647863378693558,
+    "max_abs_rate_rad_s": [
+      0.0003845121322663763,
+      0.0030626614038883645,
+      0.0013263087656778738
+    ],
+    "max_abs_wheel_speed_rad_s": [
+      2.3521406727828786,
+      23.417905198776776,
+      12.16929663608565
+    ],
+    "eclipse_samples": 1601,
+    "eclipse_max_seam_error_deg": 0.003647863378693558,
+    "reacquisition_seam_error_deg": 0.002606236877870774,
+    "stage_execution_time": null,
+    "device": "actual COM5 ESP32-S3 exact approved v5; device CCOUNT elapsed service and four stages; unchanged accepted physical adapter"
+  },
+  "health": [
+    [
+      1796623,
+      0,
+      0,
+      5084,
+      1
+    ],
+    [
+      1829643,
+      0,
+      0,
+      5084,
+      1
+    ],
+    [
+      1857254,
+      0,
+      0,
+      5084,
+      1
+    ],
+    [
+      1884559,
+      0,
+      0,
+      5084,
+      1
+    ],
+    [
+      1912283,
+      0,
+      0,
+      5084,
+      1
+    ],
+    [
+      1940095,
+      0,
+      0,
+      5084,
+      1
+    ],
+    [
+      1967856,
+      0,
+      0,
+      5084,
+      1
+    ],
+    [
+      1968087,
+      0,
+      0,
+      5084,
+      1
+    ]
+  ],
+  "minimum_observed_stack_headroom_bytes": 5084,
+  "counter_hz": 240000000,
+  "timing_scope": "elapsed device complete dispatch includes health/routing/parsing/ephemeris/estimator/profile/control/allocation/original formatting and preemption; excludes ISR/queue wait/suffix/TX",
+  "service_ms": {
+    "p50": 13.891208333333333,
+    "p95": 13.926508333333334,
+    "p99": 13.934095833333334,
+    "max": 13.952333333333334
+  },
+  "stage_ms": {
+    "ephemeris": {
+      "p50": 11.777787499999999,
+      "p95": 11.8010375,
+      "p99": 11.8077125,
+      "max": 11.822262499999999
+    },
+    "estimator": {
+      "p50": 0.5569875,
+      "p95": 0.5613958333333333,
+      "p99": 0.5630833333333333,
+      "max": 0.5652958333333333
+    },
+    "controller": {
+      "p50": 0.09971250000000001,
+      "p95": 0.102,
+      "p99": 0.10245,
+      "max": 0.1260375
+    },
+    "allocation": {
+      "p50": 0.06272083333333334,
+      "p95": 0.06459583333333332,
+      "p99": 0.06485833333333332,
+      "max": 0.06523333333333334
+    },
+    "stage_sum_not_full_service": {
+      "p50": 12.483745833333334,
+      "p95": 12.518354166666667,
+      "p99": 12.525991666666666,
+      "max": 12.541995833333333
+    }
+  },
+  "serial_rtt_ms": {
+    "p50": 26.4276,
+    "p95": 26.7868,
+    "p99": 27.0138,
+    "max": 32.4016
+  },
+  "rtt_clock": "namespace(implementation='QueryPerformanceCounter()', monotonic=True, adjustable=False, resolution=1e-07)"
+}

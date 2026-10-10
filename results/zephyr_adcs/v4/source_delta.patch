@@ -1,0 +1,227 @@
+--- v3/esp32/src/command_framing.h
++++ v4/esp32/src/command_framing.h
+@@ -7,4 +7,9 @@
+     // In particular NUL must never truncate a command into a valid reset.
+     return (c >= 0x20 && c <= 0x7e) || c == '\t' || c == '\r' || c == '\n';
+ }
++// Preserve CR as whitespace, never erase it and join command/numeric tokens.
++// The protocol's horizontal whitespace is space/tab; LF ends the wire line.
++inline char commandTextByte(unsigned char c) {
++    return c == '\r' ? ' ' : static_cast<char>(c);
++}
+ }  // namespace adcs
+--- v3/esp32/zephyr/src/main.cpp
++++ v4/esp32/zephyr/src/main.cpp
+@@ -147,9 +147,12 @@
+         unsigned char chunk[64];
+         int count = uart_fifo_read(dev, chunk, sizeof(chunk));
+         for (int i = 0; i < count; ++i) {
+-            char c = (char)chunk[i];
+-            if (c == '\r') continue;
++            char c = adcs::commandTextByte(chunk[i]);
+             if (c == '\n') {
++                // CRLF/trailing CR must not change exact diagnostics (XI).
++                // Trim only the tail; internal CR separators remain spaces.
++                while (rx_len && (rx_line[rx_len - 1] == ' ' ||
++                                  rx_line[rx_len - 1] == '\t')) --rx_len;
+                 if (rx_overflow || rx_invalid) {
+                     // Consume/refuse the whole malformed line once. Never let
+                     // binary payload truncate an XZ into a destructive reset.
+--- v3/docs/esp32_closed_loop.md
++++ v4/docs/esp32_closed_loop.md
+@@ -66,7 +66,9 @@
+ parses closed-loop fields with bounded `strtod` reads. The 320-byte line buffer
+ accepts at most 319 ASCII payload bytes plus NUL (newline is not stored).
+ The framing boundary rejects embedded NUL, non-ASCII bytes, DEL and other
+-control bytes (except tab, ignored CR and terminating LF). A malformed line is
++control bytes (except tab, CR preserved as space and terminating LF). CR must
++never join split operator/numeric tokens: `X\rZ` is not `XZ`, and `.3\r5` is
++not `.35`. Each CR consumes a payload byte; LF is the only line delimiter. A malformed line is
+ drained through LF and refused once without dispatching its prefix or suffix;
+ the next valid line is processed normally. Binary refusal is not a line-length
+ overflow and does not reset cumulative RX health.
+@@ -139,8 +141,9 @@
+ 
+ Migration is image-manifest gated: the historical v1 image had plan-only `XZ`
+ and is not compatible with the corrected persistent-session lifecycle. Preserve
+-its evidence; v2 review found a malformed binary-reset framing bypass. Review
+-and approve the corrected v3 source and flash-artifact manifest,
++its evidence; v2 review found a malformed binary-reset framing bypass, and
++v3 was withdrawn after an internal CR token-joining reset alias was reproduced.
++Review and approve the corrected v4 source and flash-artifact manifest,
+ then have the designated hardware owner replace the acceptance manifest. A
+ successful build does not authorize flashing or prove hardware acceptance.
+ 
+--- v3/tests/test_adcs_protocol_host.py
++++ v4/tests/test_adcs_protocol_host.py
+@@ -125,7 +125,9 @@
+ 
+ 
+ @pytest.mark.parametrize(
+-    "invalid", ["XZ\x00 extra", "XZ\x01", "XZ\x1a", "XZ\x7f", "XZ\x80", "\x00XZ"]
++    "invalid", ["XZ\x00 extra", "XZ\x01", "XZ\x1a", "XZ\x7f", "XZ\x80", "\x00XZ",
++                "X\rZ", "X\r\rZ", "XC .3\r5 .15 .0028 200 3.27e-6 1675.5160819145563",
++                "XL .\r2 0", "XS2 3 1700000000\r000 .1 0 0 0 .2 1 .3 1 .1 -.2 6900000 0 0"]
+ )
+ def test_binary_reset_framing_preserves_dynamic_and_pending_state(protocol, invalid):
+     attitude = quat.from_axis_angle([1, -2, 3], .3)
+@@ -141,6 +143,18 @@
+     assert refusal[0] == E_REFUSAL and refusal[1][0] == 4
+     assert after == before
+     assert replies[-1][0] == Y_FRAME and replies[-1][1][F_STATUS] == OK
++    baseline = exchange(protocol, setup + [sample_line(3, .1, attitude)])
++    assert replies[-1][1][:20] == baseline[-1][1][:20]
++    assert any(abs(v) > 0 for v in before[0][1][9:12])
++
++
++@pytest.mark.parametrize("reset", ["XZ", "XZ\r", "XZ \t\r", "XZ\r\r"])
++def test_native_crlf_reset_and_cr_whitespace_preserve_valid_syntax(protocol, reset):
++    config = config_line().replace(" ", "\r", 1)
++    replies = exchange(protocol, [config, "XL\r0\r0", "XR\r1 0 0 0 1 0 0 0 20",
++                                 "XE\r", reset, "TEST_STORES_CLEAR"])
++    assert all(kind == E_REFUSAL and fields[0] == OK for kind, fields in replies[:-1])
++    assert replies[-1] == (7, [1])
+ 
+ 
+ def config_line(kp: float = 0.35, kd: float = 0.15) -> str:
+--- v3/tests/test_zephyr_adcs_integration.py
++++ v4/tests/test_zephyr_adcs_integration.py
+@@ -92,9 +92,10 @@
+                    capture_output=True, text=True, check=True, timeout=120)
+     def run(mode, script=None):
+         result = subprocess.run([str(binary), mode], env=_env_for(compiler),
+-                                capture_output=True, text=True, encoding="latin1", input=script,
++                                capture_output=True,
++                                input=script.encode("latin1") if script is not None else None,
+                                 check=True, timeout=10)
+-        return result.stdout.splitlines()
++        return result.stdout.decode("latin1").splitlines()
+     return run
+ 
+ 
+@@ -156,12 +157,15 @@
+ 
+ 
+ @pytest.mark.parametrize(
+-    "invalid", ["XZ\x00 extra", "XZ\x01", "XZ\x1a", "XZ\x7f", "XZ\x80", "\x00XZ"]
++    "invalid", ["XZ\x00 extra", "XZ\x01", "XZ\x1a", "XZ\x7f", "XZ\x80", "\x00XZ",
++                "X\rZ", "X\r\rZ", "XC .3\r5 .15 .0028 200 3.27e-6 1675.5160819145563",
++                "XL .\r2 0", ISR_NEXT.rstrip("\n").replace("1735689600100", "1735689600\r100")]
+ )
+ def test_actual_isr_malformed_binary_reset_is_transactional_and_recovers(target, invalid):
+     baseline = target("isr-script", ISR_SETUP + ISR_NEXT)
+     observed = target("isr-script", ISR_SETUP + invalid + "\n" + ISR_NEXT)
+     assert "TRANSACTION 1" in observed
++    assert "MOMENTUM 1" in observed
+     assert "TRANSACTION 0" not in observed
+     refusals = [line for line in observed if line.startswith("E ") and line.split()[2] == "4"]
+     assert len(refusals) == 1
+@@ -172,7 +176,7 @@
+     assert any(float(v) != 0 for v in baseline[6].split()[15:18])
+ 
+ 
+-@pytest.mark.parametrize("reset", ["XZ", "XZ \t\r"])
++@pytest.mark.parametrize("reset", ["XZ", "XZ\r", "XZ \t\r", "XZ\r\r"])
+ def test_actual_isr_valid_reset_still_clears_and_accepts_fresh_time_zero(target, reset):
+     lines = target("isr-reset", ISR_SETUP + reset +
+                    "\nXH\nXL 0 0\nXR 1 0 0 0 1 0 0 0 20\nXE\n" +
+@@ -182,6 +186,20 @@
+     assert lines[-1].startswith("Y 0 3 1 ")
+ 
+ 
++def test_actual_isr_crlf_identity_health_and_legacy_match_lf(target):
++    script = ("XI\nXH\nS2 1 1735689600000 0 0 0 .00002 .00001 .00003 "
++              "1 0 0 6878137 0 0\n")
++    baseline = target("isr-reset", script)
++    assert "I 1 test-source-digest 240000000 320 64" in baseline
++    assert target("isr-reset", script.replace("\n", "\r\n")) == baseline
++
++
++def test_actual_isr_cr_separators_and_crlf_keep_valid_syntax(target):
++    baseline = target("isr-reset", ISR_SETUP + ISR_NEXT)
++    script = (ISR_SETUP + ISR_NEXT).replace(" ", "\r").replace("\n", "\r\n")
++    assert target("isr-reset", script) == baseline
++
++
+ def test_native_ephemeris_framing_refuses_binary_and_overlong_lines_once(tmp_path):
+     from examples import hil_closed_loop_run as hil
+ 
+@@ -192,11 +210,17 @@
+                               check=True).stdout.splitlines()
+ 
+     baseline = run(ISR_SETUP + ISR_NEXT)
++    assert run((ISR_SETUP + ISR_NEXT).replace(" ", "\r").replace("\n", "\r\n")) == baseline
++    for reset in ("XZ", "XZ\r", "XZ \t\r", "XZ\r\r"):
++        assert run(ISR_SETUP + reset + "\n")[-1] == "E XZ 0 -1 0"
+     for invalid in ("XZ\x00 extra", "XZ\x01", "XZ\x1a", "XZ\x7f", "XZ\x80", "\x00XZ",
+-                    "XZ\x00" + "x" * 5000, "XZ" + " " * 5000):
++                    "XZ\x00" + "x" * 5000, "XZ" + " " * 5000,
++                    "X\rZ", "X\r\rZ", "XC .3\r5 .15 .0028 200 3.27e-6 1675.5160819145563",
++                    "XL .\r2 0", ISR_NEXT.rstrip("\n").replace("1735689600100", "1735689600\r100")):
+         lines = run(ISR_SETUP + invalid + "\n" + ISR_NEXT)
+         assert len(lines) == len(baseline) + 1
+-        assert lines[len(ISR_SETUP.splitlines())] == "E LINE 4 -1 1"
++        refusal = lines[len(ISR_SETUP.splitlines())].split()
++        assert refusal[0] == "E" and refusal[2] == "4" and refusal[-1] == "1"
+         assert [line for line in lines if line.startswith("Y ")] == [
+             line for line in baseline if line.startswith("Y ")
+         ]
+--- v3/tests/firmware/adcs_protocol_driver.cpp
++++ v4/tests/firmware/adcs_protocol_driver.cpp
+@@ -111,16 +111,19 @@
+         bool invalid = false;
+         while (c != EOF && c != '\n') {
+             if (!adcs::commandByteValid(static_cast<unsigned char>(c))) invalid = true;
+-            if (c != '\r' && !invalid) {
++            if (!invalid) {
+                 if (length + 1 >= static_cast<size_t>(adcs::kMaxLine)) {
+                     overlong = true;
+                 } else {
+-                    line[length++] = static_cast<char>(c);
++                    line[length++] = adcs::commandTextByte(static_cast<unsigned char>(c));
+                 }
+             }
+             c = getchar();
+         }
+         if (c == EOF && length == 0 && !overlong && !invalid) break;
++        // Windows text callers send CRLF even though stdin is binary. Trim
++        // trailing whitespace only; internal CR separators must survive.
++        while (length && (line[length - 1] == ' ' || line[length - 1] == '\t')) --length;
+         line[length] = '\0';
+         if (overlong || invalid) {
+             adcs::formatRefusal(session, invalid ? "LINE" : "LONG",
+--- v3/tests/firmware/adcs_ephemeris_stdio.cpp
++++ v4/tests/firmware/adcs_ephemeris_stdio.cpp
+@@ -37,9 +37,9 @@
+         bool invalid = false;
+         while (c != EOF && c != '\n') {
+             if (!adcs::commandByteValid(static_cast<unsigned char>(c))) invalid = true;
+-            if (c != '\r' && !invalid) {
++            if (!invalid) {
+                 if (n + 1 >= sizeof(line)) invalid = true;
+-                else line[n++] = static_cast<char>(c);
++                else line[n++] = adcs::commandTextByte(static_cast<unsigned char>(c));
+             }
+             c = getchar();
+         }
+--- v3/tests/firmware/zephyr_main_driver.cpp
++++ v4/tests/firmware/zephyr_main_driver.cpp
+@@ -18,9 +18,15 @@
+         sent += memcmp(before_invalid, &session, sizeof(session)) == 0
+                     ? "TRANSACTION 1\n" : "TRANSACTION 0\n";
+     }
+-    checking_invalid = !queued.empty() &&
+-                       (queued.front() == "!" || queued.front() == "XZ");
+-    if (checking_invalid) memcpy(before_invalid, &session, sizeof(session));
++    // isr-script regressions place one malformed command before the final
++    // ordinary sample. Snapshot its dispatch even if broken framing merges it
++    // into an apparently valid command; exclude legitimate setup commands.
++    checking_invalid = queued.size() == 2 && queued.front().find("XR ") != 0;
++    if (checking_invalid) {
++        memcpy(before_invalid, &session, sizeof(session));
++        sent += (session.wheel_speed[0] != 0 || session.wheel_speed[1] != 0 ||
++                 session.wheel_speed[2] != 0) ? "MOMENTUM 1\n" : "MOMENTUM 0\n";
++    }
+ }
+ 
+ int main(int argc, char **argv) {

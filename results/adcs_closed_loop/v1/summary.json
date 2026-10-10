@@ -1,0 +1,198 @@
+{
+  "sensors": "noisy",
+  "planner_scope": "single-axis rest-to-rest sequencing of scalar slew angles; no multi-axis planner is implemented",
+  "rotor_configuration": {
+    "name": "TGR 29-12",
+    "source": "TGR 29-12 Reaction Wheel, Micro Motor, Data Sheet Rev B, Motor Parameter Table, p.1 (https://www.thingap.com/wp-content/uploads/2023/02/TGR-29-12-Datasheet-Rev-B.pdf)",
+    "rotor_inertia_kg_m2": 3.27e-06,
+    "rotor_mass_kg": 0.028,
+    "max_speed_rpm": 16000.0,
+    "max_speed_rad_s": 1675.5160819145563,
+    "continuous_torque_atm_nm": 0.0135,
+    "continuous_torque_vac_nm": 0.0028,
+    "continuous_torque_nm_used": 0.0028,
+    "peak_torque_1s_atm_nm": 0.036,
+    "peak_torque_1s_vac_nm": 0.034,
+    "peak_torque_3s_atm_nm": 0.024,
+    "peak_torque_3s_vac_nm": 0.019,
+    "magnetic_poles": 6,
+    "torque_constant_nm_per_arms": 0.0056,
+    "resistance_ohm": 1.019,
+    "inductance_uh": 7.13,
+    "electrical_frequency_hz_at_max_speed": 300.0,
+    "acceleration_cap_rad_s2": 200.0,
+    "max_acceleration_from_continuous_torque_rad_s2": 856.269113149847,
+    "acceleration_cap_is_datasheet_claim": false
+  },
+  "runs": {
+    "slewos": {
+      "config": {
+        "duration_s": 300.0,
+        "dt_s": 0.05,
+        "hub_inertia_kg_m2": [
+          0.02,
+          0.025,
+          0.03
+        ],
+        "start_attitude": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target_attitude": null,
+        "proportional_gain": 0.35,
+        "derivative_gain": 0.15,
+        "wheel_set": null,
+        "slewos_run_dir": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\PocketADCS\\Github\\reaction-wheel-tradespace\\results\\fa01\\fa01_a_v2",
+        "slewos_case_id": "a2-00000",
+        "slewos_method": "DO",
+        "eclipse_windows": [],
+        "sensors": "noisy",
+        "output_dir": "results\\adcs_closed_loop\\v1",
+        "tag": "slewos_a2-00000_DO_noisy"
+      },
+      "error": {
+        "final_attitude_error_deg": 0.05988739112849079,
+        "max_attitude_error_deg": 0.09931734390720248,
+        "final_estimate_error_deg": 0.06341503372564915,
+        "max_estimate_error_deg": 0.5453328284244129
+      },
+      "wheels": {
+        "max_speed_bound_rad_s": 1675.5160819145563,
+        "max_abs_wheel_speed_rad_s": 18.420236736572754,
+        "max_acceleration_cap_rad_s2": 200.0,
+        "saturated_steps": 51.0,
+        "max_commanded_applied_gap_nm": 0.00018717158902500366
+      },
+      "planner": {
+        "is_planner_generated": true,
+        "source": "SlewOS FA01 run C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\PocketADCS\\Github\\reaction-wheel-tradespace\\results\\fa01\\fa01_a_v2",
+        "order": [
+          1,
+          0
+        ],
+        "case_id": "a2-00000",
+        "method": "DO",
+        "total_duration_s": 2681.974849858644,
+        "planner_scope": "single-axis rest-to-rest sequencing of scalar slew angles; no multi-axis planner is implemented"
+      },
+      "plant": {
+        "final_attitude": [
+          0.8683500640162891,
+          0.00013863803293618656,
+          0.0004021522770737703,
+          0.4959515957993766
+        ],
+        "final_body_rate_rad_s": [
+          5.721657374003637e-05,
+          -0.0004110484949426225,
+          0.000870537675024964
+        ],
+        "final_wheel_speed_rad_s": [
+          -0.3500056798155755,
+          3.1429836397994673,
+          -7.98745471221585
+        ],
+        "commanded_target_attitude": [
+          0.8681978477893374,
+          0.0,
+          0.0,
+          0.4962181950452467
+        ],
+        "final_attitude_error_to_target_deg": 0.060113283837908246
+      },
+      "truth_cross_check": {
+        "max_controller_input_vs_truth_deg": 0.5441907010028103,
+        "final_controller_input_vs_truth_deg": 0.06139531245053812
+      }
+    },
+    "target_3d": {
+      "config": {
+        "duration_s": 300.0,
+        "dt_s": 0.05,
+        "hub_inertia_kg_m2": [
+          0.02,
+          0.025,
+          0.03
+        ],
+        "start_attitude": [
+          0.9887710779360422,
+          0.14943813247359922,
+          0.0,
+          0.0
+        ],
+        "target_attitude": [
+          0.9393727128473789,
+          0.10391372781674944,
+          0.27710327417799857,
+          0.17318954636124906
+        ],
+        "proportional_gain": 0.35,
+        "derivative_gain": 0.15,
+        "wheel_set": null,
+        "slewos_run_dir": null,
+        "slewos_case_id": null,
+        "slewos_method": null,
+        "eclipse_windows": [
+          [
+            100.0,
+            200.0
+          ]
+        ],
+        "sensors": "noisy",
+        "output_dir": "results\\adcs_closed_loop\\v1",
+        "tag": "target_3d_noisy_eclipse"
+      },
+      "error": {
+        "final_attitude_error_deg": 0.03391959036802177,
+        "max_attitude_error_deg": 1.455288911234142,
+        "final_estimate_error_deg": 0.2011146485078935,
+        "max_estimate_error_deg": 1.5275460353213934,
+        "max_attitude_error_deg_during_eclipse": 1.455288911234142
+      },
+      "wheels": {
+        "max_speed_bound_rad_s": 1675.5160819145563,
+        "max_abs_wheel_speed_rad_s": 69.90136437638834,
+        "max_acceleration_cap_rad_s2": 200.0,
+        "saturated_steps": 10.0,
+        "max_commanded_applied_gap_nm": 0.001429412979516551
+      },
+      "planner": {
+        "is_planner_generated": false,
+        "source": "externally supplied smoothstep reference profile; the implemented planner is single-axis, so this is not planner output",
+        "order": [],
+        "planner_scope": "single-axis rest-to-rest sequencing of scalar slew angles; no multi-axis planner is implemented"
+      },
+      "plant": {
+        "final_attitude": [
+          0.9394668598621697,
+          0.1038351709286596,
+          0.2769533017300536,
+          0.172965734062421
+        ],
+        "final_body_rate_rad_s": [
+          -0.0005547854761055865,
+          -0.0002968894210990521,
+          0.0003468569251055097
+        ],
+        "final_wheel_speed_rad_s": [
+          3.393738125571421,
+          2.2700936868143238,
+          -3.1825204817463666
+        ],
+        "commanded_target_attitude": [
+          0.9393727128473789,
+          0.10391372781674944,
+          0.27710327417799857,
+          0.17318954636124906
+        ],
+        "final_attitude_error_to_target_deg": 0.03391959041100162
+      },
+      "truth_cross_check": {
+        "max_controller_input_vs_truth_deg": 1.5247354386898369,
+        "final_controller_input_vs_truth_deg": 0.20107022215671047
+      }
+    }
+  }
+}

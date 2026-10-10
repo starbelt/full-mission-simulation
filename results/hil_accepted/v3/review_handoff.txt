@@ -1,0 +1,99 @@
+Task t_a4be5194: round-2 rework handoff, ready for independent review
+
+Changes this round:
+  examples/hil_closed_loop_run.py
+  tests/test_hil_accepted_adapter.py
+  results/hil_accepted/v3/audit_runs.py (artifact read-back script)
+No C-header, accepted-PC runtime, Zephyr, build/flash-script edits, COM5 access or flash. Existing unrelated working-tree changes retained; no commit.
+
+Fixes:
+  Configuration/plan E ACKs require exactly five fields and the expected command.
+  All three numeric ACK fields are parsed as integers, status must be 0,
+  sequence must be -1 and has_fix must be 0 or 1. Nonfinite/fractional fields
+  can no longer yield a successful run.
+  Manifest v2 hashes 20 sources: all shared esp32/src C headers, all accepted
+  ADCS Python modules, actual stdio surrogate driver, adapter/wire helpers and
+  truth_environment. Keys use platform-independent POSIX relative paths.
+  Native manifests record SHA256 of the executable actually launched.
+  Serial binary hash remains null because no target binary was measured.
+
+RED -> GREEN evidence:
+  .venv/Scripts/python.exe -m pytest tests/test_hil_accepted_adapter.py -k malformed_plan_ack -q --tb=short
+    Before fix: 36 failed DID NOT RAISE ProtocolError, 24 already-passing refusals.
+    After fix: 60 passed, 23 deselected in 7.24s.
+    Cases cover XC/XL/XR/XE with NaN/Inf/fractional integers/wrong sequence/
+    invalid booleans/nonzero status/incomplete/extra fields; native valid ACKs
+    are retained through all full CLI runs.
+  Provenance assertion first failed KeyError 'esp32/src/adcs_core.h'; after fix
+    targeted complete 3D test validates every required source and binary digest.
+
+Final regression commands (environment exported once):
+  export PYTHONPATH='src;.' OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+  .venv/Scripts/python.exe -m pytest tests/test_hil_accepted_adapter.py tests/test_hil_closed_loop_plant.py tests/test_adcs_core_differential.py tests/test_adcs_protocol_host.py tests/test_hil_closed_loop_harness.py tests/test_hil_closed_loop_protocol_pin.py -q --tb=short
+    138 passed in 32.64s, exit 0.
+  .venv/Scripts/python.exe -m pytest -q
+    Tracked background proc_10431bc0decd, actual completion exit 0:
+    516 passed, 3 warnings in 766.90s (0:12:46).
+    Warnings are existing ERFA dubious-year warnings in the 2035 Sun test.
+  .venv/Scripts/python.exe -m ruff check examples/hil_closed_loop.py examples/hil_closed_loop_run.py tests/test_hil_accepted_adapter.py tests/test_hil_closed_loop_plant.py
+    All checks passed, exit 0 (rerun after full pytest).
+
+Executed complete CLI commands, all PASS / exit 0:
+  .venv/Scripts/python.exe -m examples.hil_closed_loop_run --offline --output-dir results/hil_accepted/v3/slewos --slewos-run-dir 'C:/Users/drago/Nextcloud/School - NextCloud/Research/PocketADCS/Github/reaction-wheel-tradespace/results/fa01/fa01_a_v2' --case-id a2-00000 --method DO
+  .venv/Scripts/python.exe -m examples.hil_closed_loop_run --offline --output-dir results/hil_accepted/v3/target3d --duration 300 --start 0.9887710779360422 0.14943813247359922 0 0 --target 0.9393727128473789 0.10391372781674944 0.27710327417799857 0.17318954636124906
+  .venv/Scripts/python.exe -m examples.hil_closed_loop_run --offline --output-dir results/hil_accepted/v3/eclipse --duration 300 --start 0.9887710779360422 0.14943813247359922 0 0 --target 0.9393727128473789 0.10391372781674944 0.27710327417799857 0.17318954636124906 --eclipse 80 160
+  .venv/Scripts/python.exe -m examples.hil_closed_loop_run --offline --output-dir results/hil_accepted/v3/biased_noisy --duration 300 --start 0.9887710779360422 0.14943813247359922 0 0 --target 0.9393727128473789 0.10391372781674944 0.27710327417799857 0.17318954636124906 --eclipse 80 160 --noisy --fix-bias-deg 1 --target-tolerance-deg 2
+
+Observed physical final-target errors:
+  Full actual 2-segment SlewOS: 53641 samples, 2681.974849858644s,
+    0.02846167315102706deg (<0.1deg).
+  External nontrivial 3D: 6001 samples, 300s,
+    0.0075581127842401456deg (<0.1deg).
+    Max body rates [0.00038452463022296314,0.0030627253955182623,0.001326318764587991]rad/s.
+    Max wheel speeds [2.352217125382269,23.418394495412922,12.169388379204895]rad/s.
+  Ideal eclipse: 6001 samples, 1601 eclipse samples,
+    0.007558120885474125deg (<0.1deg).
+    Maximum eclipse estimated-control vs same-instant truth 0.003647863378693558deg;
+    reacquisition 0.002606236877870774deg, no absolute fix accepted in eclipse.
+  Noisy +1deg common sensor mounting bias: 1.0101981109026688deg final error,
+    passes explicitly relaxed 2deg threshold, NOT the ideal 0.1deg criterion.
+    Maximum eclipse seam error 1.752033659643646deg, reacquisition 1.0279376723363096deg.
+    Seeded gyro bias/noise and directional noise as disclosed in v2 handoff.
+
+Exact reviewer reproduction, now refused by the real offline CLI:
+  .venv/Scripts/python.exe -c 'from examples import hil_closed_loop_run as h
+class MalformedAck(h.StdioLink):
+    def read_reply(self, deadline):
+        line = super().read_reply(deadline)
+        return "E XC 0 nan nan" if line and line.startswith("E XC ") else line
+h.StdioLink = MalformedAck
+raise SystemExit(h.main(["--offline", "--output-dir", "results/hil_accepted/v3/rejected_nonfinite_ack", "--duration", "0.1"]))'
+  Output: MISMATCH: non-integer configuration/plan ACK: ['E','XC','0','nan','nan']
+  Actual exit 2; raw capture has the exact malformed ACK, no success summary.
+
+Artifact read-back:
+  .venv/Scripts/python.exe results/hil_accepted/v3/audit_runs.py
+    Exit 0, four cases verified. Independently recomputed final quaternion error
+    from last pre-actuation plant truth and commanded target; checked exact
+    sample counts/sequences, finite/complete replies, ACKs, eclipse rejection,
+    estimate/control/wheel echo fields, source and executable hashes.
+    Physical final duration is exact; transmitted t_s has 12-significant-digit
+    formatting (<=5e-8s audit tolerance), epoch is integer Unix milliseconds.
+    Four original device entry-header hashes match immutable v2 manifests.
+
+Absolute artifact root:
+  C:/Users/drago/Nextcloud/School - NextCloud/Research/pocketadcs-sim/results/hil_accepted/v3/
+  slewos/, target3d/, eclipse/, biased_noisy/: manifest.json, summary.json,
+    wire.jsonl, samples.jsonl.
+  Adjacent *_build/: build.json and adcs_ephemeris_stdio.exe.
+  audit.json, audit_runs.py, review_handoff.txt.
+  rejected_nonfinite_ack/wire.jsonl: concrete refused reviewer payload.
+  Original v1/v2/review_r1 outputs were not rewritten.
+
+Limitations unchanged:
+  Native correctness only; no ESP32 performance/latency claim. Stage timings null.
+  SerialLink not hardware-tested. Circular navigation, artificial eclipse and
+  one-second independent environment interpolation; not physical driver validation.
+  Provisional protocol allocation period 50ms, maximum two schedule segments.
+  Current tested actual SlewOS schedule has two segments and is complete.
+  Parent independently reviews before any Zephyr integration or hardware stage.

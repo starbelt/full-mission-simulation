@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "config": {
+    "duration_s": 300,
+    "dt_s": 0.05,
+    "hub_inertia_kg_m2": [
+      0.02,
+      0.025,
+      0.03
+    ],
+    "start_attitude": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "target_attitude": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "proportional_gain": 0.35,
+    "derivative_gain": 0.15,
+    "wheel_set": null,
+    "slewos_run_dir": "C:/Users/drago/Nextcloud/School - NextCloud/Research/PocketADCS/Github/reaction-wheel-tradespace/results/fa01/fa01_a_v2",
+    "slewos_case_id": "a2-00000",
+    "slewos_method": "DO",
+    "eclipse_windows": [],
+    "sensors": "ideal",
+    "output_dir": null,
+    "tag": "closed_loop"
+  },
+  "plan": {
+    "case_id": "a2-00000",
+    "method": "DO",
+    "order": [
+      1,
+      0
+    ],
+    "initial_angle_rad": 0.5237018087506935,
+    "final_angle_rad": 1.0384748012123453,
+    "total_duration_s": 2681.974849858644,
+    "source_run_dir": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\PocketADCS\\Github\\reaction-wheel-tradespace\\results\\fa01\\fa01_a_v2",
+    "planner_scope": "single-axis rest-to-rest sequencing of scalar slew angles; no multi-axis planner is implemented",
+    "segments": [
+      {
+        "objective_id": 1,
+        "start_angle_rad": 0.5237018087506935,
+        "target_angle_rad": 0.4460820244321466,
+        "duration_s": 555.6434195242749,
+        "profile_s": [
+          0.0005814544194890914,
+          555.6422566154359,
+          0.0005814544194890914
+        ]
+      },
+      {
+        "objective_id": 0,
+        "start_angle_rad": 0.4460820244321466,
+        "target_angle_rad": 1.0384748012123453,
+        "duration_s": 2126.331430334369,
+        "profile_s": [
+          0.0011596261426802812,
+          2126.3291110820837,
+          0.0011596261426802812
+        ]
+      }
+    ]
+  },
+  "commanded_target": [
+    0.8681978477893374,
+    0.0,
+    0.0,
+    0.4962181950452467
+  ],
+  "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware",
+  "stage_execution_time": null,
+  "dt_s": 0.05,
+  "duration_s": 2681.974849858644,
+  "fix_bias_rad": 0.0,
+  "environment": "circular GCRS r=6878137m i=51.6deg mu=3.986004418e14; Astropy get_sun + existing ppigrf IGRF14/frame helpers; 1s interpolation; body C_BN; gyro rad/s, magnetic T, sun unit direction; artificial eclipse windows",
+  "source_sha256": {
+    "esp32\\src\\adcs_core.h": "d3723ba391fbc7308a2ad621350f12c8d2afce1ea78196173b209b428c39ab9d",
+    "esp32\\src\\adcs_protocol.h": "b21856b72a91bc133273cd885880ce8a8341b72ab621e87ebf115a988a34ee2b",
+    "esp32\\src\\reference_provider.h": "07c5add1e74e06803aac212e87d3b4af401175d9d5066438a4a6918defe44174",
+    "esp32\\src\\igrf.h": "8f6982f664218323f7230d57d7741c00c26182f766fd47d6ac703beaba522478"
+  }
+}

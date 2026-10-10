@@ -1,0 +1,16 @@
+{
+  "scope": "real tool-observed subprocess outcomes; original harness failure preserved",
+  "python": ".venv/Scripts/python.exe",
+  "environment": "PYTHONPATH=src",
+  "runs": [
+    {"script": "preflight.py --flash", "exit_code": 0, "log": "preflight.log"},
+    {"script": "benchmark.py", "exit_code": 0, "tracked_process": "proc_2768513074f4", "log": "benchmark.log"},
+    {"script": "precheck_aux.py", "exit_code": 0, "log": "precheck_aux.log", "native_only": true, "embedded_performance": null},
+    {"command": "pytest tests/test_adcs_service_timing.py tests/test_zephyr_adcs_integration.py -q", "exit_code": 0, "tests_passed": 65, "log": "focused_tests.log"},
+    {"script": "auxiliary.py (original flags0 assertion)", "exit_code": 2, "tracked_process": "proc_f1cd2ec7e353", "log": "auxiliary.log", "failure": "Host assertion expected valid legacy flags0; approved source and actual reply use flags1. No firmware defect or hardware reset."},
+    {"script": "finish_auxiliary.py", "exit_code": 0, "tracked_process": "proc_37245d83e0fb", "log": "finish_auxiliary.log"},
+    {"script": "wheel_reset.py", "exit_code": 0, "log": "wheel_reset.log"},
+    {"script": "final_probe.py", "exit_code": 0, "evidence": "final_status.json and final_wire.jsonl"},
+    {"script": "verify.py", "exit_code": 0, "evidence": "audit.json, metrics.csv and REPORT.md"}
+  ]
+}

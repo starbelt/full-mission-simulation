@@ -1,0 +1,45 @@
+case,measurement,unit,p50,p95,p99,max,provenance
+target3d,full_service,ms,13.907858333333333,13.930483333333333,13.937433333333335,14.368983333333333,actual device CCOUNT/live XI
+target3d,host_exchange_RTT,ms,26.621,26.9428,27.2401,31.5569,host perf_counter_ns/QPC; not algorithm
+target3d,ephemeris,ms,11.779025,11.80285,11.809750000000001,12.2041625,actual device CCOUNT/live XI
+target3d,estimator,ms,0.5544208333333334,0.5576375,0.5588958333333334,0.5605208333333334,actual device CCOUNT/live XI
+target3d,controller,ms,0.09962499999999999,0.1018875,0.1022375,0.1229375,actual device CCOUNT/live XI
+target3d,allocation,ms,0.06333333333333334,0.06463333333333333,0.06485833333333332,0.06524583333333334,actual device CCOUNT/live XI
+target3d,frames,count,,,,6001,retained real wire and accepted plant
+target3d,final_physical_error,deg,,,,0.0075581127842401456,retained real wire and accepted plant
+target3d,wall_duration,s,,,,175.37704020005185,retained real wire and accepted plant
+target3d,simulated_duration,s,,,,300.0,retained real wire and accepted plant
+target3d,minimum_observed_stack,bytes,,,,5084,retained real wire and accepted plant
+slewos,full_service,ms,13.827833333333333,13.904970833333334,13.917630833333332,13.944433333333334,actual device CCOUNT/live XI
+slewos,host_exchange_RTT,ms,26.6266,27.0383,27.3391,64.8069,host perf_counter_ns/QPC; not algorithm
+slewos,ephemeris,ms,11.675762500000001,11.7502125,11.763367500000001,11.787487500000001,actual device CCOUNT/live XI
+slewos,estimator,ms,0.5507458333333334,0.5539208333333333,0.5552208333333334,0.5582166666666667,actual device CCOUNT/live XI
+slewos,controller,ms,0.0955125,0.0959,0.09605000000000001,0.12784583333333333,actual device CCOUNT/live XI
+slewos,allocation,ms,0.06289583333333333,0.06458333333333334,0.06479583333333333,0.06548333333333332,actual device CCOUNT/live XI
+slewos,frames,count,,,,53641,retained real wire and accepted plant
+slewos,final_physical_error,deg,,,,0.02846167315102706,retained real wire and accepted plant
+slewos,wall_duration,s,,,,1539.0089996000752,retained real wire and accepted plant
+slewos,simulated_duration,s,,,,2681.974849858644,retained real wire and accepted plant
+slewos,minimum_observed_stack,bytes,,,,5084,retained real wire and accepted plant
+eclipse,full_service,ms,13.891208333333333,13.926508333333334,13.934095833333334,13.952333333333334,actual device CCOUNT/live XI
+eclipse,host_exchange_RTT,ms,26.5449,26.9076,27.1653,32.5091,host perf_counter_ns/QPC; not algorithm
+eclipse,ephemeris,ms,11.777787499999999,11.8010375,11.8077125,11.822262499999999,actual device CCOUNT/live XI
+eclipse,estimator,ms,0.5569875,0.5613958333333333,0.5630833333333333,0.5652958333333333,actual device CCOUNT/live XI
+eclipse,controller,ms,0.09971250000000001,0.102,0.10245,0.1260375,actual device CCOUNT/live XI
+eclipse,allocation,ms,0.06272083333333334,0.06459583333333332,0.06485833333333332,0.06523333333333334,actual device CCOUNT/live XI
+eclipse,frames,count,,,,6001,retained real wire and accepted plant
+eclipse,final_physical_error,deg,,,,0.007558120885474125,retained real wire and accepted plant
+eclipse,wall_duration,s,,,,171.473917299998,retained real wire and accepted plant
+eclipse,simulated_duration,s,,,,300.0,retained real wire and accepted plant
+eclipse,minimum_observed_stack,bytes,,,,5084,retained real wire and accepted plant
+biased_noisy,full_service,ms,13.890070833333334,13.926420833333333,13.934583333333334,13.955008333333334,actual device CCOUNT/live XI
+biased_noisy,host_exchange_RTT,ms,26.5481,26.8994,27.1676,32.6708,host perf_counter_ns/QPC; not algorithm
+biased_noisy,ephemeris,ms,11.7784625,11.8025375,11.809225,11.8244875,actual device CCOUNT/live XI
+biased_noisy,estimator,ms,0.5561958333333333,0.5607624999999999,0.5619916666666667,0.5642666666666667,actual device CCOUNT/live XI
+biased_noisy,controller,ms,0.09975,0.1020125,0.102475,0.12655000000000002,actual device CCOUNT/live XI
+biased_noisy,allocation,ms,0.06274583333333333,0.06459583333333332,0.06485833333333332,0.06567083333333333,actual device CCOUNT/live XI
+biased_noisy,frames,count,,,,6001,retained real wire and accepted plant
+biased_noisy,final_physical_error,deg,,,,1.0101981109026688,retained real wire and accepted plant
+biased_noisy,wall_duration,s,,,,171.55519879993517,retained real wire and accepted plant
+biased_noisy,simulated_duration,s,,,,300.0,retained real wire and accepted plant
+biased_noisy,minimum_observed_stack,bytes,,,,5084,retained real wire and accepted plant

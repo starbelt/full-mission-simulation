@@ -1,0 +1,81 @@
+{
+  "changed_target_sources": [
+    "src/adcs_protocol.h",
+    "src/command_framing.h",
+    "zephyr/src/main.cpp"
+  ],
+  "accepted_physics_unchanged": true,
+  "build_id": "8b97f32191cea59a0b8038c41e64ec3be346c5d7921cc7fec3342d88f109e7bc",
+  "flash_artifacts": [
+    {
+      "path": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v4\\target\\build\\mcuboot\\zephyr\\zephyr.bin",
+      "bytes": 37344,
+      "sha256": "0c58220e5450f8c9761d99b23adb9c27a8b10a4b508f6fcd74fa0fdb229e4844",
+      "address": 0,
+      "address_hex": "0x0",
+      "partition_bytes": 65536
+    },
+    {
+      "path": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v4\\target\\build\\zephyr\\zephyr\\zephyr.signed.bin",
+      "bytes": 188204,
+      "sha256": "7bedadeeb32f0c9c1da93ff6a15f7a38b2b60f68aa91012b3048dcab95834f33",
+      "address": 131072,
+      "address_hex": "0x20000",
+      "partition_bytes": 1376256
+    }
+  ],
+  "stack_chain_bytes": 11120,
+  "prior_stack_chain_bytes": 11136,
+  "hardware_access": false,
+  "cases": {
+    "fresh/target3d": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 0.0075581127842401456,
+      "acks": 5
+    },
+    "fresh/slewos": {
+      "frames": 53641,
+      "duration_s": 2681.974849858644,
+      "error_deg": 0.02846167315102706,
+      "acks": 6
+    },
+    "fresh/eclipse": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 0.007558120885474125,
+      "acks": 5
+    },
+    "fresh/biased_noisy": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 1.0101981109026688,
+      "acks": 5
+    },
+    "persistent/target3d": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 0.0075581127842401456,
+      "acks": 5
+    },
+    "persistent/slewos": {
+      "frames": 53641,
+      "duration_s": 2681.974849858644,
+      "error_deg": 0.02846167315102706,
+      "acks": 6
+    },
+    "persistent/eclipse": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 0.007558120885474125,
+      "acks": 5
+    },
+    "persistent/biased_noisy": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 1.0101981109026688,
+      "acks": 5
+    }
+  },
+  "persistent_pid": 83748
+}

@@ -1,0 +1,46 @@
+{
+  "slewos": {
+    "frames": 53641,
+    "duration_s": 2681.974849858644,
+    "physical_final_target_error_deg": 0.02846167315102706,
+    "ack_count": 5,
+    "hashed_sources": 20,
+    "binary_sha256": "f8066d5d3c5be7bb77fdb47c9cbc2eb9cab155e494cf1669eb74c401ec382f21",
+    "eclipse_samples": 0,
+    "stage_execution_time": null,
+    "readback_verified": true
+  },
+  "target3d": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "physical_final_target_error_deg": 0.0075581127842401456,
+    "ack_count": 4,
+    "hashed_sources": 20,
+    "binary_sha256": "f1694ef2fceb26aa20e89d05ac8471af16a5e1d5ecd72cebfa1ad4d74941ff53",
+    "eclipse_samples": 0,
+    "stage_execution_time": null,
+    "readback_verified": true
+  },
+  "eclipse": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "physical_final_target_error_deg": 0.007558120885474125,
+    "ack_count": 4,
+    "hashed_sources": 20,
+    "binary_sha256": "5856549061a83b9fcace0d9beba2f10cc51fd4650669d9dbce97f8bade19c03c",
+    "eclipse_samples": 1601,
+    "stage_execution_time": null,
+    "readback_verified": true
+  },
+  "biased_noisy": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "physical_final_target_error_deg": 1.0101981109026688,
+    "ack_count": 4,
+    "hashed_sources": 20,
+    "binary_sha256": "34c8ef8684c2d125ab6f26f77e1d01fd50a076306cc4c422c722f266bd7faf02",
+    "eclipse_samples": 1601,
+    "stage_execution_time": null,
+    "readback_verified": true
+  }
+}

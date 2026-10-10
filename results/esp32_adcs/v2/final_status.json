@@ -1,0 +1,12 @@
+{
+  "identity": "I 1 a1218da36d2248d7b439bdb91e0873726001a62a2ca532b31b5ec1144536780c 240000000 320 64",
+  "health": [
+    2642316,
+    125,
+    1,
+    5084,
+    1
+  ],
+  "normal_config_restored_without_reset": true,
+  "COM5_released_on_exit": true
+}

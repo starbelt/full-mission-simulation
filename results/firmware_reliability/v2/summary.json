@@ -1,0 +1,28 @@
+{
+  "port": "COM5",
+  "batches": 30,
+  "frames_sent": 3030,
+  "replies": 3030,
+  "max_attitude_error_deg": 0.00521412839885795,
+  "median_ephemeris_us": 11758.704166666666,
+  "median_triad_us": 174.98958333333331,
+  "max_ephemeris_us": 11800.429166666667,
+  "median_transport_rtt_ms": 15.999999945051968,
+  "serial_reopens_without_reset": 10,
+  "all_batches_pass": true,
+  "quaternion_tolerance_deg": 0.1,
+  "clock_hz": 240000000,
+  "source_sha256": {
+    "esp32/zephyr/src/main.cpp": "a312c7e122d2829ecb3793dbbfc29f5492516d5d145a3ec2d2abb9eadb39e5d3",
+    "esp32/zephyr/prj.conf": "0037e58750a70854b7f91811e459cfa3887422f974ed744c5420de0b10b991fb",
+    "esp32/src/reference_provider.h": "07c5add1e74e06803aac212e87d3b4af401175d9d5066438a4a6918defe44174",
+    "esp32/src/igrf.h": "8f6982f664218323f7230d57d7741c00c26182f766fd47d6ac703beaba522478"
+  },
+  "inputs": {
+    "sensors": "ideal",
+    "seed": 7,
+    "duration_s": 10,
+    "rate_hz": 10
+  },
+  "scope": "Existing stateless S2 ephemeris/TRIAD firmware. Repeated 10-second trajectory; not full-orbit accuracy or extended ADCS acceptance."
+}

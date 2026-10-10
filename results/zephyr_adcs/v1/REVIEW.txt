@@ -1,0 +1,80 @@
+t_c44ec5d2 — BUILD-ONLY REVIEW HANDOFF
+
+Artifact root:
+C:/Users/drago/Nextcloud/School - NextCloud/Research/pocketadcs-sim/results/zephyr_adcs/v1
+
+Changes in this task
+- Actual Zephyr main dispatches accepted closed-loop protocol through the real
+  EphemerisReferenceProvider while preserving legacy S2/R and idle heartbeat.
+- Session is static/BSS. Capacity raised from 2 to 64. A 65-segment load refuses
+  without altering the committed plan. In-place XE validation avoids a large
+  Schedule stack copy and restores pending count/loaded metadata on all paths.
+- UART assembly uses the 320-byte bound (319 payload bytes plus NUL), 64 queue
+  entries, atomic failed-queue-put and overlong-line counters, and recovery at
+  newline. A successful put is not counted as a drop.
+- Actual k_cycle_get_32 callback supplies wrap-safe deltas. XI reports version,
+  source build ID, actual configured clock, input bound and schedule capacity.
+- Stack health uses k_thread_stack_space_get; unavailable is -1. Health is sampled
+  before dispatch, so frame health lags one frame; post-run XH captures the last
+  completed peak. Target rejects portable test-only health setters.
+- CMake retains application identity inputs and actual Xtensa -fstack-usage.
+  Documentation distinguishes build/native evidence from target measurements.
+
+Verification
+- RED evidence: capacity_red.log, shadow_red.log, pending_red.log.
+- Final focused suite: regressions_final.log, exit 0, 205 passed in 58.09 s.
+  Three ERFA dubious-year warnings from the 2035 Sun test are retained, not hidden.
+- Actual target build: target_build_final.log and .exit, exit 0.
+  Board waveshare_esp32s3_lr1121_hf/esp32s3/procpu, Zephyr 4.4.2,
+  Zephyr SDK 1.0.1, Xtensa GCC 14.3.0. Application and MCUboot link successfully.
+- build_manifest.json: 3869 dependency hashes, staged/copied-source equality,
+  exact source/config/toolchain/clock data, ELF size/sections and linker regions,
+  binary SHA256/address/partition checks, and explicit runtime nulls.
+- retained_target_hashes.json inventories the durable complete staged source/build
+  tree in target/ (including ELF/map/config/DTS/object files and flash binaries).
+  dependency_hashes.json records the external build closure. Sensitive development
+  signing-key dependencies are disclosed but not read or copied by this audit.
+- Global west freeze cannot succeed because optional projects are uncloned.
+  west_resolved.yml and west_actual_projects.json instead preserve all declared
+  revisions and actual HEADs for cloned projects in the actual west workspace.
+- Identity digest e6b87a559797bc135e9ec7ad8a2d36acf33f005a7b0a2e302f61bf36925309c4.
+  CMake hashes logical LF-delimited path:raw-source-SHA256 records. Windows writes
+  their output file as CRLF; its raw SHA256 is separately recorded, not conflated.
+- Xtensa main allocation reduced from 9920 to 1296 bytes after removing an
+  accidental local Session shadow. Closed-loop ephemeris call-chain lower bound
+  is 11136 bytes against configured 16384. This leaves room for runtime overhead
+  but is NOT a measured watermark or a proof of all possible runtime paths.
+- Application size tool: text 159048, data 5800, BSS 166676 bytes. Linker-reported
+  application IRAM 36808/400640 and DRAM 83904/384256 bytes; section accounting
+  differs from size-tool aggregates, so use actual ELF/map/region data for fit.
+
+Final native verification (native_final/, native_audit.json, native_final.exit=0)
+- Complete SlewOS: 53641 unique matched frames, 2681.974849858644 s,
+  physical final-target error 0.02846167315102706 deg.
+- 3D: 6001 frames, 300 s, error 0.0075581127842401456 deg.
+- Eclipse: 6001 frames including 1601 eclipse samples, 300 s,
+  error 0.007558120885474125 deg.
+- Biased/noisy: 6001 frames, 300 s, error 1.0101981109026688 deg.
+All four summaries exactly equal approved v3 results. Audit verifies contiguous
+joined sequences, strict finite ACKs and Y frames, complete duration, current
+source/executable hashes, controller estimate seam, command application on every
+nonterminal step and independently recomputed physical final-target error.
+Terminal sample has dt=0 and applies no additional command, by accepted harness
+design. Native executable was rebuilt after final shared-header changes.
+
+Exact retained flash artifacts (NOT flashed)
+- target/build/mcuboot/zephyr/zephyr.bin at 0x0, 37344 bytes
+  SHA256 e1b0a4ee16de5083bc2094677c41a72e53c96c919916babe8770e68777312306
+- target/build/zephyr/zephyr/zephyr.signed.bin at 0x20000, 188204 bytes
+  SHA256 2efaace3049efc60f56c7fecc9b42dff88213c75c0cb1b061c18253f028bbc56
+
+Limitations / next gate
+No serial port was opened; neither COM5 nor COM7 was flashed. No target stack
+watermark, RX-drop soak or embedded execution-time claim is made. Target build
+logs retain Kconfig warnings (SERIAL_ESP32_USB assignment and update-footer size)
+and printf float-promotion warnings. Generated configuration/driver closure is
+retained for review. Preserve watchdog-reset post-flash and DTR/RTS-low-before-open
+in later authorized hardware evaluation. Native time counters are unavailable for
+embedded-performance claims. No PC physics/estimator/controller changes, commit,
+push, or unrelated-worktree cleanup were performed. Request independent review
+of this bounded stage; overall hardware evaluation remains unfinished.

@@ -1,0 +1,57 @@
+{
+  "esp32/src/adcs_protocol.h": {
+    "sha256": "14f5855faf2c3e07ef96460e89ce16d8f6981334f0d0b2aa9ccffb335f6fd200",
+    "bytes": 37459,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\esp32\\src\\adcs_protocol.h"
+  },
+  "esp32/src/command_framing.h": {
+    "sha256": "55ceddaebaeee0281798c8c87442c70212e53cdea904f7c9252eacc9db8c1600",
+    "bytes": 402,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\esp32\\src\\command_framing.h"
+  },
+  "esp32/zephyr/src/main.cpp": {
+    "sha256": "05169f2d7724a57416ccacfe7dcc36dd947f5f06341c5c46252858ac03df71f1",
+    "bytes": 12318,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\esp32\\zephyr\\src\\main.cpp"
+  },
+  "examples/hil_closed_loop_run.py": {
+    "sha256": "e65c8865a906ea6a01282c5f440aeb680bb50384216fc7ace89bd01611acd274",
+    "bytes": 19298,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\examples\\hil_closed_loop_run.py"
+  },
+  "docs/esp32_closed_loop.md": {
+    "sha256": "be3f084713bef24d45141cb7707c5bba225f0060d13c2dd415ded39495cbea6f",
+    "bytes": 13562,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\docs\\esp32_closed_loop.md"
+  },
+  "tests/test_adcs_protocol_host.py": {
+    "sha256": "c1816d742eb1ae6b71fda69a2c4b2c3f7d038ab2891c8b0dd722b0207e6d3b37",
+    "bytes": 30580,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\tests\\test_adcs_protocol_host.py"
+  },
+  "tests/test_hil_accepted_adapter.py": {
+    "sha256": "2121c42832eb8e5894939824460043850c7890451b53c6c7c53e92fc25496769",
+    "bytes": 14078,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\tests\\test_hil_accepted_adapter.py"
+  },
+  "tests/test_zephyr_adcs_integration.py": {
+    "sha256": "01c43c43cc450864a22ea3281976cf889bfff313ab3d5094522bd9788b762a1c",
+    "bytes": 9278,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\tests\\test_zephyr_adcs_integration.py"
+  },
+  "tests/firmware/adcs_protocol_driver.cpp": {
+    "sha256": "b3be7885443181c7ee5fc51cc424c7b6469fb30e23726b5825d0c5c2b3d5611b",
+    "bytes": 8239,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\tests\\firmware\\adcs_protocol_driver.cpp"
+  },
+  "tests/firmware/adcs_ephemeris_stdio.cpp": {
+    "sha256": "6324bfe7fe96f0cc48e4e60e7fadc82f99ac94883feefc3fed879c2d8ab5a3be",
+    "bytes": 1984,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\tests\\firmware\\adcs_ephemeris_stdio.cpp"
+  },
+  "tests/firmware/zephyr_main_driver.cpp": {
+    "sha256": "0f78f0f1f09c76ac3aecc65cf5a8685f74585957dfba8a9d0c5a48755191fc65",
+    "bytes": 3227,
+    "retained": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v3\\handoff_sources\\tests\\firmware\\zephyr_main_driver.cpp"
+  }
+}

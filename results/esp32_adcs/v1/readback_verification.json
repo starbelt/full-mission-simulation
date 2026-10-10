@@ -1,0 +1,12 @@
+[
+  {
+    "path": "readback_boot.bin",
+    "sha256": "e1b0a4ee16de5083bc2094677c41a72e53c96c919916babe8770e68777312306",
+    "expected": "e1b0a4ee16de5083bc2094677c41a72e53c96c919916babe8770e68777312306"
+  },
+  {
+    "path": "readback_app.bin",
+    "sha256": "2efaace3049efc60f56c7fecc9b42dff88213c75c0cb1b061c18253f028bbc56",
+    "expected": "2efaace3049efc60f56c7fecc9b42dff88213c75c0cb1b061c18253f028bbc56"
+  }
+]

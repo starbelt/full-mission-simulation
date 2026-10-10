@@ -1,0 +1,134 @@
+{
+  "slewos": {
+    "frames": 53641,
+    "duration_s": 2681.974849858644,
+    "final_target_error_deg": 0.02846167315102706,
+    "final_truth_attitude": [
+      0.8683208194922052,
+      1.2333677612993423e-05,
+      9.878374424546702e-06,
+      0.4960029780018296
+    ],
+    "commanded_target": [
+      0.8681978477893374,
+      0.0,
+      0.0,
+      0.4962181950452467
+    ],
+    "max_controller_input_vs_truth_deg": 0.022451484755994712,
+    "max_abs_rate_rad_s": [
+      1.0223328485792575e-05,
+      7.573009450363892e-06,
+      0.0002819259367395735
+    ],
+    "max_abs_wheel_speed_rad_s": [
+      0.06253822629969419,
+      0.05790519877675841,
+      2.586758409785796
+    ],
+    "eclipse_samples": 0,
+    "eclipse_max_seam_error_deg": 0.0,
+    "reacquisition_seam_error_deg": null,
+    "stage_execution_time": null,
+    "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware"
+  },
+  "target3d": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "final_target_error_deg": 0.0075581127842401456,
+    "final_truth_attitude": [
+      0.939393433419318,
+      0.10391459955106816,
+      0.2770427739359811,
+      0.17317342365000352
+    ],
+    "commanded_target": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "max_controller_input_vs_truth_deg": 0.002693425149325349,
+    "max_abs_rate_rad_s": [
+      0.00038452463022296314,
+      0.0030627253955182623,
+      0.001326318764587991
+    ],
+    "max_abs_wheel_speed_rad_s": [
+      2.352217125382269,
+      23.418394495412922,
+      12.169388379204895
+    ],
+    "eclipse_samples": 0,
+    "eclipse_max_seam_error_deg": 0.0,
+    "reacquisition_seam_error_deg": null,
+    "stage_execution_time": null,
+    "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware"
+  },
+  "eclipse": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "final_target_error_deg": 0.007558120885474125,
+    "final_truth_attitude": [
+      0.9393934334508229,
+      0.10391459952344738,
+      0.277042773895417,
+      0.17317342356057108
+    ],
+    "commanded_target": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "max_controller_input_vs_truth_deg": 0.003647863378693558,
+    "max_abs_rate_rad_s": [
+      0.0003845121322663763,
+      0.0030626614038883645,
+      0.0013263087656778738
+    ],
+    "max_abs_wheel_speed_rad_s": [
+      2.3521406727828786,
+      23.417905198776776,
+      12.16929663608565
+    ],
+    "eclipse_samples": 1601,
+    "eclipse_max_seam_error_deg": 0.003647863378693558,
+    "reacquisition_seam_error_deg": 0.002606236877870774,
+    "stage_execution_time": null,
+    "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware"
+  },
+  "biased_noisy": {
+    "frames": 6001,
+    "duration_s": 300.0,
+    "final_target_error_deg": 1.0101981109026688,
+    "final_truth_attitude": [
+      0.9423580513548218,
+      0.10129401057492925,
+      0.2705347768331394,
+      0.16885425962122744
+    ],
+    "commanded_target": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "max_controller_input_vs_truth_deg": 1.752033659643646,
+    "max_abs_rate_rad_s": [
+      0.00886091374060337,
+      0.005568419650709687,
+      0.006207348399024506
+    ],
+    "max_abs_wheel_speed_rad_s": [
+      54.20405198776735,
+      42.57758409785932,
+      56.95435779816513
+    ],
+    "eclipse_samples": 1601,
+    "eclipse_max_seam_error_deg": 1.752033659643646,
+    "reacquisition_seam_error_deg": 1.0279376723363096,
+    "stage_execution_time": null,
+    "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware"
+  }
+}

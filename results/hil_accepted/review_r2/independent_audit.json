@@ -1,0 +1,66 @@
+{
+  "slewos": {
+    "v3": {
+      "frames": 53641,
+      "duration_s": 2681.974849858644,
+      "final_target_error_deg": 0.02846167315102706,
+      "source_count": 20,
+      "eclipse_samples": 0
+    },
+    "review_r2": {
+      "frames": 53641,
+      "duration_s": 2681.974849858644,
+      "final_target_error_deg": 0.02846167315102706,
+      "source_count": 20,
+      "eclipse_samples": 0
+    }
+  },
+  "target3d": {
+    "v3": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "final_target_error_deg": 0.0075581127842401456,
+      "source_count": 20,
+      "eclipse_samples": 0
+    },
+    "review_r2": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "final_target_error_deg": 0.0075581127842401456,
+      "source_count": 20,
+      "eclipse_samples": 0
+    }
+  },
+  "eclipse": {
+    "v3": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "final_target_error_deg": 0.007558120885474125,
+      "source_count": 20,
+      "eclipse_samples": 1601
+    },
+    "review_r2": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "final_target_error_deg": 0.007558120885474125,
+      "source_count": 20,
+      "eclipse_samples": 1601
+    }
+  },
+  "biased_noisy": {
+    "v3": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "final_target_error_deg": 1.0101981109026688,
+      "source_count": 20,
+      "eclipse_samples": 1601
+    },
+    "review_r2": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "final_target_error_deg": 1.0101981109026688,
+      "source_count": 20,
+      "eclipse_samples": 1601
+    }
+  }
+}

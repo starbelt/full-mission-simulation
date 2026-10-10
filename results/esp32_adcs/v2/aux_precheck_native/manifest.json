@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "config": {
+    "duration_s": 30,
+    "dt_s": 0.05,
+    "hub_inertia_kg_m2": [
+      0.02,
+      0.025,
+      0.03
+    ],
+    "start_attitude": [
+      0.9887710779360422,
+      0.14943813247359922,
+      0.0,
+      0.0
+    ],
+    "target_attitude": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "proportional_gain": 0.35,
+    "derivative_gain": 0.15,
+    "wheel_set": null,
+    "slewos_run_dir": null,
+    "slewos_case_id": null,
+    "slewos_method": "DO",
+    "eclipse_windows": [],
+    "sensors": "ideal",
+    "output_dir": null,
+    "tag": "closed_loop"
+  },
+  "plan": {
+    "is_planner_generated": false,
+    "source": "external smoothstep 3D profile"
+  },
+  "binary_sha256": "f7af8b930812eb7ad620442e45d2b8fc74a34e5177ae427ff8a7cb51587ed7ea",
+  "commanded_target": [
+    0.9393727128473789,
+    0.10391372781674944,
+    0.27710327417799857,
+    0.17318954636124906
+  ],
+  "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware",
+  "stage_execution_time": null,
+  "dt_s": 0.05,
+  "duration_s": 30,
+  "fix_bias_rad": 0.0,
+  "timing": {
+    "host_clock": "perf_counter_ns",
+    "host_clock_resolution_s": 1e-07,
+    "algorithm_time_from_rtt": false,
+    "device_identity": null,
+    "y_schema": "25 tokens legacy; optional 26th uint32 service_cycles",
+    "records": "timing.jsonl",
+    "native_device_metrics": null,
+    "host_exchange_boundary": "before send through matched reply reception, including host I/O/decode/logging; not algorithm time"
+  },
+  "environment": "circular GCRS r=6878137m i=51.6deg mu=3.986004418e14; Astropy get_sun + existing ppigrf IGRF14/frame helpers; 1s interpolation; body C_BN; gyro rad/s, magnetic T, sun unit direction; artificial eclipse windows",
+  "source_sha256": {
+    "esp32/src/adcs_core.h": "9d7c89152e9a28350c8ea2c82a9b60cf5d101ee3cc1abddb5504cfabb4336813",
+    "esp32/src/adcs_protocol.h": "14f5855faf2c3e07ef96460e89ce16d8f6981334f0d0b2aa9ccffb335f6fd200",
+    "esp32/src/ads_estimate.h": "f1b969ed840df8d1baea20e14162166ebd0e63cbaf77f370e865b7c0f8de56ea",
+    "esp32/src/ads_math.h": "72cd136411bbe674abe382299f231109561f5fd4557c74d7bf3bb80261030ea6",
+    "esp32/src/command_framing.h": "6ca25a14ad7668dea8b77ae56fcbcbbaa29b7ae267d1c029c2a8905245fbab7f",
+    "esp32/src/igrf.h": "8f6982f664218323f7230d57d7741c00c26182f766fd47d6ac703beaba522478",
+    "esp32/src/reference_provider.h": "07c5add1e74e06803aac212e87d3b4af401175d9d5066438a4a6918defe44174",
+    "esp32/src/sensor_source.h": "2f555a4ced3ba2425e05eeeac56fa0ef8e507c038eee8fb5ff356a023fd1249c",
+    "src/pocketadcs_sim/adcs/__init__.py": "ccd1f56c6075f9a74b4f624c4f1d3e693914628d211545dc6a4881f138d11074",
+    "src/pocketadcs_sim/adcs/closed_loop.py": "5021d44bd8b87ec913d19f3ed5ae00d45072c73802607c9f343638580d11b0bf",
+    "src/pocketadcs_sim/adcs/controller.py": "3629715659018a82c36e6a8b25ee0ca23939165087e5f7f19bdb1cdbd4d51aa2",
+    "src/pocketadcs_sim/adcs/estimator.py": "d92ecd2322906a764234e3e2c318210a146d814ec5095905f37b158229cb00b7",
+    "src/pocketadcs_sim/adcs/plant.py": "6de747dfe4e3ebaff4bc7061b37d078804574d0873b4695413129c46fff05902",
+    "src/pocketadcs_sim/adcs/quaternions.py": "8c014272892ea26eb473cd6333689245c0486cc4b816d3f55d1a853025874001",
+    "src/pocketadcs_sim/adcs/rotors.py": "cca66bbe5c33de83df1952ed17bc8a885001612f8ee21bd5a1dc0679811533d0",
+    "src/pocketadcs_sim/adcs/slewos_adapter.py": "bf4175306f1290eb7b725aa68278062051b1439cb4560ecb32493b4edb92234a",
+    "src/pocketadcs_sim/adcs/wheel_board.py": "e80da922013cb0c46295bcceb42879632b9b5f7b027144e93f659b89a4e647ca",
+    "examples/hil_closed_loop_run.py": "68612ef4dea1a8e7fc5687e2255569e99c501b25dcdd9fe8fb6c896c28e0d537",
+    "examples/hil_closed_loop.py": "425f4364114944814bbf454030c2892dceb0c33bd75d82e7f6f3f8b49b35104f",
+    "src/pocketadcs_sim/truth_environment.py": "c54c525f846fddce56e2dcaf88e58275e5ae35cb742bfbb57736cf60a8cafe3b",
+    "tests/firmware/adcs_ephemeris_stdio.cpp": "1e15976893eb671b77cf766c4e1a5f1d5fa7720d62ec7dacfa85219891f5d856"
+  }
+}

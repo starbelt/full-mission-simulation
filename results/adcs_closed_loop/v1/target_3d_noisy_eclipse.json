@@ -1,0 +1,91 @@
+{
+  "config": {
+    "duration_s": 300.0,
+    "dt_s": 0.05,
+    "hub_inertia_kg_m2": [
+      0.02,
+      0.025,
+      0.03
+    ],
+    "start_attitude": [
+      0.9887710779360422,
+      0.14943813247359922,
+      0.0,
+      0.0
+    ],
+    "target_attitude": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "proportional_gain": 0.35,
+    "derivative_gain": 0.15,
+    "wheel_set": null,
+    "slewos_run_dir": null,
+    "slewos_case_id": null,
+    "slewos_method": null,
+    "eclipse_windows": [
+      [
+        100.0,
+        200.0
+      ]
+    ],
+    "sensors": "noisy",
+    "output_dir": "results\\adcs_closed_loop\\v1",
+    "tag": "target_3d_noisy_eclipse"
+  },
+  "error": {
+    "final_attitude_error_deg": 0.03391959036802177,
+    "max_attitude_error_deg": 1.455288911234142,
+    "final_estimate_error_deg": 0.2011146485078935,
+    "max_estimate_error_deg": 1.5275460353213934,
+    "max_attitude_error_deg_during_eclipse": 1.455288911234142
+  },
+  "wheels": {
+    "max_speed_bound_rad_s": 1675.5160819145563,
+    "max_abs_wheel_speed_rad_s": 69.90136437638834,
+    "max_acceleration_cap_rad_s2": 200.0,
+    "saturated_steps": 10.0,
+    "max_commanded_applied_gap_nm": 0.001429412979516551
+  },
+  "planner": {
+    "is_planner_generated": false,
+    "source": "externally supplied smoothstep reference profile; the implemented planner is single-axis, so this is not planner output",
+    "order": [],
+    "planner_scope": "single-axis rest-to-rest sequencing of scalar slew angles; no multi-axis planner is implemented"
+  },
+  "plant": {
+    "final_attitude": [
+      0.9394668598621697,
+      0.1038351709286596,
+      0.2769533017300536,
+      0.172965734062421
+    ],
+    "final_body_rate_rad_s": [
+      -0.0005547854761055865,
+      -0.0002968894210990521,
+      0.0003468569251055097
+    ],
+    "final_wheel_speed_rad_s": [
+      3.393738125571421,
+      2.2700936868143238,
+      -3.1825204817463666
+    ],
+    "commanded_target_attitude": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "final_attitude_error_to_target_deg": 0.03391959041100162
+  },
+  "truth_cross_check": {
+    "max_controller_input_vs_truth_deg": 1.5247354386898369,
+    "final_controller_input_vs_truth_deg": 0.20107022215671047
+  },
+  "artifacts": {
+    "json": "target_3d_noisy_eclipse.json",
+    "csv": "target_3d_noisy_eclipse.csv"
+  }
+}

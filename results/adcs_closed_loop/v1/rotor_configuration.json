@@ -1,0 +1,23 @@
+{
+  "name": "TGR 29-12",
+  "source": "TGR 29-12 Reaction Wheel, Micro Motor, Data Sheet Rev B, Motor Parameter Table, p.1 (https://www.thingap.com/wp-content/uploads/2023/02/TGR-29-12-Datasheet-Rev-B.pdf)",
+  "rotor_inertia_kg_m2": 3.27e-06,
+  "rotor_mass_kg": 0.028,
+  "max_speed_rpm": 16000.0,
+  "max_speed_rad_s": 1675.5160819145563,
+  "continuous_torque_atm_nm": 0.0135,
+  "continuous_torque_vac_nm": 0.0028,
+  "continuous_torque_nm_used": 0.0028,
+  "peak_torque_1s_atm_nm": 0.036,
+  "peak_torque_1s_vac_nm": 0.034,
+  "peak_torque_3s_atm_nm": 0.024,
+  "peak_torque_3s_vac_nm": 0.019,
+  "magnetic_poles": 6,
+  "torque_constant_nm_per_arms": 0.0056,
+  "resistance_ohm": 1.019,
+  "inductance_uh": 7.13,
+  "electrical_frequency_hz_at_max_speed": 300.0,
+  "acceleration_cap_rad_s2": 200.0,
+  "max_acceleration_from_continuous_torque_rad_s2": 856.269113149847,
+  "acceleration_cap_is_datasheet_claim": false
+}

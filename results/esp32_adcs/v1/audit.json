@@ -1,0 +1,38 @@
+{
+  "result": "partial acceptance; blocked by no-reset fresh-session defect",
+  "completed_case": "target3d",
+  "tx_frames": 6001,
+  "y_replies": 6001,
+  "samples": 6001,
+  "exact_unique_seq_join": true,
+  "raw_timestamp_endpoint_s": 300,
+  "final_physical_target_error_deg": 0.0075581127842401456,
+  "controller_consumes_estimate": true,
+  "actual_device_commands_applied_to_accepted_board": true,
+  "source_hashes_unchanged": true,
+  "flags": {
+    "status_0_stale_false_reject_0": 6001
+  },
+  "rx_drops": 0,
+  "rx_overflows": 0,
+  "minimum_stack_headroom_bytes": 5068,
+  "instrumented_stage_deadline_violations": 0,
+  "full_control_loop_deadline_measurement": null,
+  "rtt_clock": "namespace(implementation='GetTickCount64()', monotonic=True, adjustable=False, resolution=0.015625)",
+  "rtt_limitation": "Windows monotonic_ns quantized roughly 15-16ms; RTT quantiles coarse, not precision timing",
+  "uncompleted": [
+    "slewos 53641 frames",
+    "eclipse 6001 frames",
+    "biased_noisy 6001 frames",
+    "20Hz paced streaming",
+    "malformed/stale recovery",
+    "burst/overlong overload recovery",
+    "legacy S2 compatibility"
+  ],
+  "limitations": [
+    "Hardware four-stage cycles omit profile/parsing/formatting; full core duration unavailable",
+    "Transport timestamps added by wrapper; accepted sample timestamps unchanged",
+    "Normal run is unpaced lockstep closed-loop, not a 20Hz wall-time demonstration",
+    "No embedded performance inference from native surrogate"
+  ]
+}

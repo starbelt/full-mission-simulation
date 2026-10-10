@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "config": {
+    "duration_s": 300.0,
+    "dt_s": 0.05,
+    "hub_inertia_kg_m2": [
+      0.02,
+      0.025,
+      0.03
+    ],
+    "start_attitude": [
+      0.9887710779360422,
+      0.14943813247359922,
+      0.0,
+      0.0
+    ],
+    "target_attitude": [
+      0.9393727128473789,
+      0.10391372781674944,
+      0.27710327417799857,
+      0.17318954636124906
+    ],
+    "proportional_gain": 0.35,
+    "derivative_gain": 0.15,
+    "wheel_set": null,
+    "slewos_run_dir": null,
+    "slewos_case_id": null,
+    "slewos_method": "DO",
+    "eclipse_windows": [],
+    "sensors": "ideal",
+    "output_dir": null,
+    "tag": "closed_loop"
+  },
+  "plan": {
+    "is_planner_generated": false,
+    "source": "external smoothstep 3D profile"
+  },
+  "commanded_target": [
+    0.9393727128473789,
+    0.10391372781674944,
+    0.27710327417799857,
+    0.17318954636124906
+  ],
+  "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware",
+  "stage_execution_time": null,
+  "dt_s": 0.05,
+  "duration_s": 300.0,
+  "fix_bias_rad": 0.0,
+  "environment": "circular GCRS r=6878137m i=51.6deg mu=3.986004418e14; Astropy get_sun + existing ppigrf IGRF14/frame helpers; 1s interpolation; body C_BN; gyro rad/s, magnetic T, sun unit direction; artificial eclipse windows",
+  "source_sha256": {
+    "esp32\\src\\adcs_core.h": "d3723ba391fbc7308a2ad621350f12c8d2afce1ea78196173b209b428c39ab9d",
+    "esp32\\src\\adcs_protocol.h": "b21856b72a91bc133273cd885880ce8a8341b72ab621e87ebf115a988a34ee2b",
+    "esp32\\src\\reference_provider.h": "07c5add1e74e06803aac212e87d3b4af401175d9d5066438a4a6918defe44174",
+    "esp32\\src\\igrf.h": "8f6982f664218323f7230d57d7741c00c26182f766fd47d6ac703beaba522478"
+  }
+}

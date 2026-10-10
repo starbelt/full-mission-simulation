@@ -1,0 +1,14 @@
+{
+  "port": "COM5",
+  "batches": 30,
+  "frames_sent": 3030,
+  "replies": 3030,
+  "max_attitude_error_deg": 0.9208797447897604,
+  "median_ephemeris_us": 11655.472916666666,
+  "median_triad_us": 178.24583333333334,
+  "max_ephemeris_us": 11694.841666666667,
+  "median_transport_rtt_ms": 15.999999945051968,
+  "serial_reopens_without_reset": 10,
+  "all_batches_pass": true,
+  "scope": "Existing stateless S2 ephemeris/TRIAD firmware. Repeated 10-second trajectory, not a full-orbit accuracy validation."
+}

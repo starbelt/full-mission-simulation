@@ -1,0 +1,12 @@
+case,measurement,unit,p50,p95,p99,max,provenance
+target3d,ephemeris,ms,11.769087500000001,11.792275,11.7993375,12.1958625,target CCOUNT / live XI 240000000Hz
+target3d,estimator,ms,0.54935,0.56095,0.5626875,0.5651,target CCOUNT / live XI 240000000Hz
+target3d,controller,ms,0.10380833333333332,0.10691666666666667,0.1072375,0.12794166666666665,target CCOUNT / live XI 240000000Hz
+target3d,allocation,ms,0.05867083333333333,0.0608625,0.06114166666666667,0.06160416666666666,target CCOUNT / live XI 240000000Hz
+target3d,instrumented_total,ms,12.479666666666667,12.504608333333334,12.513083333333332,12.811979166666665,target CCOUNT / live XI 240000000Hz
+target3d,serial_RTT_coarse,ms,31.0,32.0,32.0,32.0,Windows monotonic_ns; roughly15-16ms quantization
+target3d,frames,count,,,,6001,real retained wire/physical adapter
+target3d,final_physical_pointing,deg,,,,0.0075581127842401456,real retained wire/physical adapter
+target3d,wall_time,s,,,,171.81200000003446,real retained wire/physical adapter
+target3d,simulated_mission_time,s,,,,300,real retained wire/physical adapter
+target3d,minimum_stack_headroom,bytes,,,,5068,real retained wire/physical adapter

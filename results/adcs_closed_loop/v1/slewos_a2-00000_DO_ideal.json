@@ -1,0 +1,86 @@
+{
+  "config": {
+    "duration_s": 300.0,
+    "dt_s": 0.05,
+    "hub_inertia_kg_m2": [
+      0.02,
+      0.025,
+      0.03
+    ],
+    "start_attitude": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "target_attitude": null,
+    "proportional_gain": 0.35,
+    "derivative_gain": 0.15,
+    "wheel_set": null,
+    "slewos_run_dir": "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\PocketADCS\\Github\\reaction-wheel-tradespace\\results\\fa01\\fa01_a_v2",
+    "slewos_case_id": "a2-00000",
+    "slewos_method": "DO",
+    "eclipse_windows": [],
+    "sensors": "ideal",
+    "output_dir": "results\\adcs_closed_loop\\v1",
+    "tag": "slewos_a2-00000_DO_ideal"
+  },
+  "error": {
+    "final_attitude_error_deg": 0.026566206758291598,
+    "max_attitude_error_deg": 0.026566206758291598,
+    "final_estimate_error_deg": 0.0007981244825344563,
+    "max_estimate_error_deg": 0.0007981263091382528
+  },
+  "wheels": {
+    "max_speed_bound_rad_s": 1675.5160819145563,
+    "max_abs_wheel_speed_rad_s": 2.5562296623956056,
+    "max_acceleration_cap_rad_s2": 200.0,
+    "saturated_steps": 0.0,
+    "max_commanded_applied_gap_nm": 0.0
+  },
+  "planner": {
+    "is_planner_generated": true,
+    "source": "SlewOS FA01 run C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\PocketADCS\\Github\\reaction-wheel-tradespace\\results\\fa01\\fa01_a_v2",
+    "order": [
+      1,
+      0
+    ],
+    "case_id": "a2-00000",
+    "method": "DO",
+    "total_duration_s": 2681.974849858644,
+    "planner_scope": "single-axis rest-to-rest sequencing of scalar slew angles; no multi-axis planner is implemented"
+  },
+  "plant": {
+    "final_attitude": [
+      0.8683145415801967,
+      1.1471618664404159e-17,
+      -7.093867187524985e-18,
+      0.49601396843271744
+    ],
+    "final_body_rate_rad_s": [
+      1.1437427291703418e-17,
+      -8.473199159671833e-18,
+      0.0002785986659462033
+    ],
+    "final_wheel_speed_rad_s": [
+      -6.996512116859624e-14,
+      6.478828328839116e-14,
+      -2.5562296623927296
+    ],
+    "commanded_target_attitude": [
+      0.8681978477893374,
+      0.0,
+      0.0,
+      0.4962181950452467
+    ],
+    "final_attitude_error_to_target_deg": 0.026953618010259042
+  },
+  "truth_cross_check": {
+    "max_controller_input_vs_truth_deg": 0.0,
+    "final_controller_input_vs_truth_deg": 0.0
+  },
+  "artifacts": {
+    "json": "slewos_a2-00000_DO_ideal.json",
+    "csv": "slewos_a2-00000_DO_ideal.csv"
+  }
+}

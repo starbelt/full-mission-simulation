@@ -1,0 +1,24 @@
+{
+  "case": "slewos",
+  "fixture_sha256": "03646ce5514e3d7e16ca43df83183bcb768b3aacef3a58a9d880dc5bc6a91cd3",
+  "build_id": "e6b87a559797bc135e9ec7ad8a2d36acf33f005a7b0a2e302f61bf36925309c4",
+  "frame_replies": 0,
+  "wall_s": 48.75,
+  "simulated_duration_s": 2681.974849858644,
+  "failure": "ProtocolError(\"not a Y reply: 'E EST 2 1 1'\")",
+  "physical_summary": null,
+  "health": [
+    [
+      252840,
+      0,
+      0,
+      5068,
+      1
+    ]
+  ],
+  "minimum_observed_stack_headroom_bytes": 5068,
+  "counter_hz": 240000000,
+  "timing_scope": "CCOUNT four stages only; excludes profile, parsing, formatting, transport",
+  "stage_ms": {},
+  "serial_rtt_ms": null
+}

@@ -1,0 +1,42 @@
+{
+  "esp32/src/adcs_protocol.h": {
+    "sha256": "14f5855faf2c3e07ef96460e89ce16d8f6981334f0d0b2aa9ccffb335f6fd200",
+    "bytes": 37459
+  },
+  "examples/hil_closed_loop_run.py": {
+    "sha256": "e65c8865a906ea6a01282c5f440aeb680bb50384216fc7ace89bd01611acd274",
+    "bytes": 19298
+  },
+  "docs/esp32_closed_loop.md": {
+    "sha256": "fc0054dbbf319ec6c16d939140da9435cc5355fca96aa6b9216fecbdf54f979f",
+    "bytes": 13135
+  },
+  "tests/test_adcs_protocol_host.py": {
+    "sha256": "4bdc703c6a382da816a120f8fecc93c2840cc62381c539939b2c79389f667ad8",
+    "bytes": 29648
+  },
+  "tests/test_hil_accepted_adapter.py": {
+    "sha256": "2121c42832eb8e5894939824460043850c7890451b53c6c7c53e92fc25496769",
+    "bytes": 14078
+  },
+  "tests/firmware/adcs_protocol_driver.cpp": {
+    "sha256": "4328860f28c06b842f209ff1e88aae3919d3a2b5f135e64984f52e6ea8b62658",
+    "bytes": 7724
+  },
+  "results/zephyr_adcs/v2/build_manifest.json": {
+    "sha256": "4af9148e2ef3b479f9d4fcd3b44b40c2317cb74dac99f14d03fab8bdbb253dc6",
+    "bytes": 93146
+  },
+  "results/zephyr_adcs/v2/verify_artifacts.py": {
+    "sha256": "09818066ddb39677b4ec0edef0437d240968c01d98d76704a598cdb6086ed104",
+    "bytes": 6239
+  },
+  "results/zephyr_adcs/v2/run_native.py": {
+    "sha256": "6e96e7468a811438fb94d49e42a5775d86645d672e8c32f745d7c4270fa69d9c",
+    "bytes": 2472
+  },
+  "results/zephyr_adcs/v2/REPORT.md": {
+    "sha256": "dc8636fa5c81e9c6deb40fd3d9480d19c68e071dc3a89c468600be52d5dff064",
+    "bytes": 6957
+  }
+}

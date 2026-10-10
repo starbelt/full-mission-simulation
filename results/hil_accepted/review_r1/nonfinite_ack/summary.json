@@ -1,0 +1,33 @@
+{
+  "frames": 3,
+  "duration_s": 0.1,
+  "final_target_error_deg": 3.878801828098024e-05,
+  "final_truth_attitude": [
+    0.9999999999999427,
+    1.9749895907884656e-07,
+    -1.0731096295233503e-07,
+    -2.530765815235308e-07
+  ],
+  "commanded_target": [
+    1.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "max_controller_input_vs_truth_deg": 0.0025300250606716205,
+  "max_abs_rate_rad_s": [
+    7.071343835282931e-06,
+    3.941484453833438e-06,
+    9.437304667124618e-06
+  ],
+  "max_abs_wheel_speed_rad_s": [
+    0.04325688073394496,
+    0.030137614678899083,
+    0.08659021406727829
+  ],
+  "eclipse_samples": 0,
+  "eclipse_max_seam_error_deg": 0.0,
+  "reacquisition_seam_error_deg": null,
+  "stage_execution_time": null,
+  "device": "native-host exact C++ core/protocol/ephemeris surrogate; NOT hardware"
+}

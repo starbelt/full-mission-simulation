@@ -1,0 +1,34 @@
+{
+  "source_hashes": 27,
+  "retained_files": 1519,
+  "dependency_files": 3869,
+  "stack_chain_bytes": 11136,
+  "build_id": "e6b87a559797bc135e9ec7ad8a2d36acf33f005a7b0a2e302f61bf36925309c4",
+  "native": {
+    "slewos": {
+      "frames": 53641,
+      "duration_s": 2681.974849858644,
+      "error_deg": 0.02846167315102706,
+      "acks": 5
+    },
+    "target3d": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 0.0075581127842401456,
+      "acks": 4
+    },
+    "eclipse": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 0.007558120885474125,
+      "acks": 4
+    },
+    "biased_noisy": {
+      "frames": 6001,
+      "duration_s": 300.0,
+      "error_deg": 1.0101981109026688,
+      "acks": 4
+    }
+  },
+  "native_root": "review_native"
+}

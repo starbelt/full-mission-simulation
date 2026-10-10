@@ -1,0 +1,70 @@
+{
+  "commands": [
+    {
+      "command": [
+        "py",
+        "-3.13",
+        "-m",
+        "esptool",
+        "--chip",
+        "esp32s3",
+        "--port",
+        "COM5",
+        "--baud",
+        "460800",
+        "--after",
+        "watchdog-reset",
+        "write-flash",
+        "0x0",
+        "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v5\\target\\build\\mcuboot\\zephyr\\zephyr.bin",
+        "0x20000",
+        "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\zephyr_adcs\\v5\\target\\build\\zephyr\\zephyr\\zephyr.signed.bin"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "py",
+        "-3.13",
+        "-m",
+        "esptool",
+        "--chip",
+        "esp32s3",
+        "--port",
+        "COM5",
+        "--baud",
+        "460800",
+        "--after",
+        "watchdog-reset",
+        "read-flash",
+        "0x0",
+        "37344",
+        "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\esp32_adcs\\v2\\readback_boot.bin"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "py",
+        "-3.13",
+        "-m",
+        "esptool",
+        "--chip",
+        "esp32s3",
+        "--port",
+        "COM5",
+        "--baud",
+        "460800",
+        "--after",
+        "watchdog-reset",
+        "read-flash",
+        "0x20000",
+        "253740",
+        "C:\\Users\\drago\\Nextcloud\\School - NextCloud\\Research\\pocketadcs-sim\\results\\esp32_adcs\\v2\\readback_app.bin"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "boot_sha256": "d4977e94efb9af1ab194d60fa4a75857516c0a0d1743402a4228d64d9de71741",
+  "app_sha256": "c3fafdd8e4baad118fcf6987392d5c3f0f39ba6db5366c70daef4caaf88e37d3"
+}

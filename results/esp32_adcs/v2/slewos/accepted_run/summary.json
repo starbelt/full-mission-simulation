@@ -1,0 +1,33 @@
+{
+  "frames": 53641,
+  "duration_s": 2681.974849858644,
+  "final_target_error_deg": 0.02846167315102706,
+  "final_truth_attitude": [
+    0.8683208194922052,
+    1.2333677612993423e-05,
+    9.878374424546702e-06,
+    0.4960029780018296
+  ],
+  "commanded_target": [
+    0.8681978477893374,
+    0.0,
+    0.0,
+    0.4962181950452467
+  ],
+  "max_controller_input_vs_truth_deg": 0.022451484755994712,
+  "max_abs_rate_rad_s": [
+    1.0223328485792575e-05,
+    7.573009450363892e-06,
+    0.0002819259367395735
+  ],
+  "max_abs_wheel_speed_rad_s": [
+    0.06253822629969419,
+    0.05790519877675841,
+    2.586758409785796
+  ],
+  "eclipse_samples": 0,
+  "eclipse_max_seam_error_deg": 0.0,
+  "reacquisition_seam_error_deg": null,
+  "stage_execution_time": null,
+  "device": "actual COM5 ESP32-S3 exact approved v5; device CCOUNT elapsed service and four stages; unchanged accepted physical adapter"
+}
