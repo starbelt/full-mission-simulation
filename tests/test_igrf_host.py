@@ -52,7 +52,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-
 from test_ads_math_host import _env_for, find_usable_compiler
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -74,10 +73,9 @@ ppigrf = pytest.importorskip("ppigrf", reason="ppigrf is the ground truth")
 erfa = pytest.importorskip("erfa", reason="erfa is the frame reference")
 astropy = pytest.importorskip("astropy", reason="astropy is the frame reference")
 
-from astropy.coordinates import CartesianRepresentation, GCRS, ITRS  # noqa: E402
-from astropy.time import Time  # noqa: E402
 import astropy.units as u  # noqa: E402
-
+from astropy.coordinates import GCRS, ITRS, CartesianRepresentation  # noqa: E402
+from astropy.time import Time  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # host truth
@@ -88,7 +86,7 @@ def host_igrf_gcrs(position_itrs_m: np.ndarray, times: Time) -> np.ndarray:
     """The host's own path: ppigrf in ITRS, rotated to GCRS by astropy."""
     fields = np.empty_like(position_itrs_m)
     datetimes = times.to_datetime(timezone=None)
-    for index, (position, epoch) in enumerate(zip(position_itrs_m, datetimes)):
+    for index, (position, epoch) in enumerate(zip(position_itrs_m, datetimes, strict=True)):
         x, y, z = position / 1000.0
         radius = float(np.linalg.norm([x, y, z]))
         colatitude = float(np.degrees(np.arccos(z / radius)))
@@ -251,7 +249,7 @@ def run_igrf(binary: Path, cases: np.ndarray) -> tuple[np.ndarray, np.ndarray, n
             # C++ side reads it with %lld, which stops at the '.'. That leaves
             # ".0000000000" to be consumed as pos[0] and shifts every field by
             # one, so each case after the first gets a garbage position.
-            fh.write("%d %.17e %.17e %.17e\n" % tuple(row))
+            fh.write(f"{int(row[0])} {row[1]:.17e} {row[2]:.17e} {row[3]:.17e}\n")
     run = subprocess.run(
         [str(binary), str(tmp)],
         capture_output=True,
